@@ -25,9 +25,13 @@ def get_player_bots():
 	if len(sys.argv) != (NUM_OF_BOTS+1):
 		raise Exception("requerie at least " + NUM_OF_BOTS + " bots")
 
-	BotsNames = sys.argv[1:]
-	Bots = [ _do_turn(BotName) for BotName in BotsNames]
-	return zip(BotsNames ,Bots)
+	botsNames = sys.argv[1:]
+
+	bots = (_do_turn(botName) for botName in botsNames)
+
+	bots = [(bot , bot.do_turn) for bot in Bots]
+	
+	return bots
 
 
 def main():
@@ -36,7 +40,7 @@ def main():
 	winner=None
 	
 	#
-	#	here will be some call to init emulator .
+	#	here will be some call to init emulator(?) .
 	#
 
 	#turn loop
