@@ -12,6 +12,7 @@
 
 from enum import Enum
 from numpy import sign
+import emulator
 
 class _location (object):
     def __init__(self ,x,y ,ocupaier = None):
@@ -110,16 +111,28 @@ class _CDirections(Enum):
 
 def Cget_direction(location1 , location2):
     'return the a possible path'
+
     if location1 is _Clocation and location2 is _Clocation:
         return location1.z - location2.z
-    raise Exception("the arguments must be a locations")
-
+    
+    raise Exception("the arguments must be a locations"
 
 
 # just to demostrate the idea . 
 def CSail_to_direction(pirate,direction ,speed = 2):
+
     counter = 0 
-    while counter < speed:
-        sail_path = 1*sign(z.real) +1j * sign(z.imag)
+    
+    while counter < speed :
+        sail_path = 1 * sign(z.real) + 1j * sign(z.imag)
         counter += C_Sum(sail_path)
+        
         pirate.location.z += sail_path
+
+    emulator.update(pirate)
+
+def CSail_to_location(pirate ,location ,speed =2):
+
+    direction = Cget_direction(pirate.location , location)
+    return CSail_to_direction(pirate ,direction ,speed)
+    
