@@ -1,5 +1,6 @@
 
 
+
 #
 #   the object we wand is mach more similer to grids (or latitue) then cordinate system
 #   so i will crate a new object which will be simple and limited to the "Integer world" .
@@ -10,9 +11,16 @@
 #        
 #
 
+
+
+#dont forget : pip install enum34
 from enum import Enum
 from numpy import sign
 import emulator
+
+
+global NUM_OF_BOTS
+
 
 class _location (object):
     def __init__(self ,x,y ,ocupaier = None):
@@ -58,25 +66,29 @@ class _Directions(Enum):
 
 
 
-def C_Sum(z):
-    return z.real + z.imag
+def _abs(z):
+    return abs(z.real) + abs(z.imag)
 
 class _Clocation():
     def __init__ (self ,z):
         self.z = z 
-        self.Sum = C_Sum(z)
-
-
+    def __abs__(self):
+        return _abs(self.z)
+    def __sub__(other , self):
+        return Cget_direction(self , other)
+    def __mul__(self ,other):
+        return abs(self - other)
 # 
 #   get_distance stay as it was
 #
 
+
 def Cget_distance(location1 , location2):
     'calculate the distance between a pair of locations'
-    if location1 is _Clocation and location2 is _Clocation:
-        return abs( location1.Sum - location2.Sum)
-
-    raise Exception("the arguments must be a locations")
+    try:
+        return _abs(Cget_direction(location1 , location2))
+    except:
+        raise Exception("the arguments must be a locations")
 
 
 #
@@ -112,27 +124,71 @@ class _CDirections(Enum):
 def Cget_direction(location1 , location2):
     'return the a possible path'
 
-    if location1 is _Clocation and location2 is _Clocation:
-        return location1.z - location2.z
-    
-    raise Exception("the arguments must be a locations"
+    try:
+        return location2.z - location1.z
+    except:
+        raise Exception("the arguments must be a locations")
 
 
 # just to demostrate the idea . 
 def CSail_to_direction(pirate,direction ,speed = 2):
 
     counter = 0 
-    
+    z = direction
     while counter < speed :
-        sail_path = 1 * sign(z.real) + 1j * sign(z.imag)
-        counter += C_Sum(sail_path)
         
-        pirate.location.z += sail_path
+        sail_path = 1 * sign(z.real) + 1j * sign(z.imag)
+        counter += _abs(sail_path)
 
-    emulator.update(pirate)
+        #just for the dibuging
+        pirate.location = _Clocation(pirate.location.z + sail_path)
+    try:
+        emulator.update(pirate)
+    except:
+        pass
 
 def CSail_to_location(pirate ,location ,speed =2):
 
-    direction = Cget_direction(pirate.location , location)
-    return CSail_to_direction(pirate ,direction ,speed)
+    #  direction = Cget_direction(pirate.location , location)
+    #   
+    #   the above statement and under are the same 
+    #
+    direction = location - pirate.location  
+    CSail_to_direction(pirate ,direction ,speed)
     
+
+#------------------------game----------------------------#
+
+class game():
+    def __init__(self,init_Map):
+        self.islands = init_Map.init_islands()
+        self.pirates = init_Map.init_pirates()
+    def GetPiratesByPlayerId(self , PlayerId):
+        return self.pirates[PlayerId]
+    def GetIslands(self , PlayerId):
+        return self.islands[PlayerId]
+
+
+class gameApi():
+    def __init__(self , game , PlayerId):
+        self.game = game
+        self.PlayerId = PlayerId
+    def GetMyPirates(self):
+        return self.game.GetPiratesByPlayerId(self.PlayerId)
+    def GetEnemeyPirates(self):
+        #
+        #   look as shit ,one day i will make it smarter 
+        #
+        return self.game.GetPiratesByPlayerId((self.PlayerId + 1) % NUM_OF_BOTS)
+    def GatPirates(self):
+        return self.game.pirates
+    def GetFreeIslands(self):
+        return self.game.GetIslands(0)
+    def GetMyIslands(self):
+        return self.game.GetIslands(self.PlayerId + 1)
+    def GetEnemyIslands(self):
+        return self.game.GetIslands((self.PlayerId + 2) % (NUM_OF_BOTS+1))
+
+
+
+
