@@ -1,11 +1,17 @@
 
+NUM_OF_BOTS = 2
 NUM_OF_TURNS=1000
 matrix = None
+
 
 #
 #	meaby should we replace the matrix to list? (which doesn't contain eampty location)
 #
 #
+
+
+import sys
+from _do_turn import _do_turn 
 
 def init_matrix(matrix,width,hight):
 	matrix = [[None]*width]*hight
@@ -15,7 +21,14 @@ def get_player_bots():
 	'''gets the player bots do_turn function. returns array with the functions and the player instanse
 		[(mybot1,032940528),(mybot2,032940528)]
 	'''
-	pass
+
+	if len(sys.argv) != (NUM_OF_BOTS+1):
+		raise Exception("requerie at least " + NUM_OF_BOTS + " bots")
+
+	BotsNames = sys.argv[1:]
+	Bots = [ _do_turn(BotName) for BotName in BotsNames]
+	return zip(BotsNames ,Bots)
+
 
 def main():
 	init_matrix(matrix)
