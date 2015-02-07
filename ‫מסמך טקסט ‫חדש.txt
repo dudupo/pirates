@@ -11,7 +11,6 @@
 #
 
 from enum import Enum
-from numpy import sign
 
 class _location (object):
     def __init__(self ,x,y ,ocupaier = None):
@@ -23,7 +22,7 @@ class _location (object):
 
 
         
-
+    
 def get_distance(location1 , location2):
     'calculate the distance between a pair of locations'
     if location1 is _location and location2 is _location:
@@ -70,13 +69,6 @@ class _Clocation():
 #   get_distance stay as it was
 #
 
-def Cget_distance(location1 , location2):
-    'calculate the distance between a pair of locations'
-    if location1 is _Clocation and location2 is _Clocation:
-        return abs( location1.Sum - location2.Sum)
-
-    raise Exception("the arguments must be a locations")
-
 
 #
 # you must to admit that the Directions look mach better
@@ -107,19 +99,8 @@ class _CDirections(Enum):
 #       
 #
 
-
 def Cget_direction(location1 , location2):
     'return the a possible path'
-    if location1 is _Clocation and location2 is _Clocation:
-        return location1.z - location2.z
+    if location1 is _location and location2 is _location:
+        pass
     raise Exception("the arguments must be a locations")
-
-
-
-# just to demostrate the idea . 
-def CSail_to_direction(pirate,direction ,speed = 2):
-    counter = 0 
-    while counter < speed:
-        sail_path = 1*sign(z.real) +1j * sign(z.imag)
-        counter += C_Sum(sail_path)
-        pirate.location.z += sail_path
