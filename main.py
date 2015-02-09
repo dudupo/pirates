@@ -39,10 +39,6 @@ def main():
 	bots= get_player_bots()
 	winner=None
 	
-	#
-	#	here will be some call to init emulator(?) .
-	#
-
 	#turn loop
 	for turn in range(NUM_OF_TURNS):
 		#win check

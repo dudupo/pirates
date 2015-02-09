@@ -111,3 +111,16 @@ def battle(pirate , hashReal , hashImag):
         pass #'kill'
 
 
+
+
+#
+# every function as SetSail(,) push a tokens to Stack 
+#
+
+#Stacklist -> will contain each stack of every player
+def ExecuteTurn (Stacklist):
+
+    # for mixing the tokens order 
+    jumble = zip(Stacklist)
+    for tok in jumble:
+        
