@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 
@@ -124,3 +125,5 @@ def ExecuteTurn (Stacklist):
     jumble = zip(Stacklist)
     for tok in jumble:
         
+=======
+>>>>>>> dudu
