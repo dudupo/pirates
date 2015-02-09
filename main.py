@@ -29,7 +29,7 @@ def get_player_bots():
 
 	bots = (_do_turn(botName) for botName in botsNames)
 
-	bots = [(bot , bot.do_turn) for bot in Bots]
+	bots = [(bot , bot.do_turn) for bot in bots]
 	
 	return bots
 
