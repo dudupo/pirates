@@ -2,7 +2,7 @@
 
 #------------ imports --------------------------------- #
 
-import Enum as enum
+from enum import Enum  
 
 #------------- some numeric function ------------------- #
 
@@ -21,10 +21,12 @@ def _abs(z):
     return abs(z.real) + abs(z.imag)
 
 def Rotation(_list , right = True):
+    if len(_list) < 2:
+        return _list
     if right:
-        return _list[-1] + _list[0:-1]
+        return _list[1:] + [_list[0]]
     else:
-        return _list[1:] + _list[0]
+        return [_list[-1]] + _list[0:-1]
 
 #--------------- constants ---------------- #
 
@@ -49,35 +51,31 @@ FIRERANGE = 5
 pirates   =[]
 
 # abstract....
-hashReal  = h(index) , pirates 
-hashImag  = h(index) , pirates
-
-setattr(hashReal ,"insert" , _insert)
-setattr(hashImag , "insert" , _insertImag)
-
-
+#hashReal  = h(index) , pirates 
+#hashImag  = h(index) , pirates
 
 
 def insert(pirate ,hashLists):
-    _insert(pirate , hashLists[0])
+    _insert(pirate , hashLists[0] ,pirate.speed)
     _insertImag(pirate , hashLists[1])
+    battle(pirate , hashLists[0])
 
 
 
-def _insert(pirate , hashList ,_key=lambda pirate1 : \
- pirate1.location.real , sortRangeRadious = pirate.speed):
+def _insert(pirate , hashList ,  sortRangeRadious , \
+    _key=lambda pirate1 : pirate1.location.real ):
     
     # the id of pirate is constant
     lastIndex = hashList[0][pirate.id]
     hashList[1][lastIndex] = pirate
-
+    print(lastIndex)
     gen = genforSort(sortRangeRadious , hashList[1] , lastIndex)
 
     # position refers to other pirate , just for buety i called it 'position'
-    for index , position ,left in gen():
+    for index , position ,left in gen:
         smaller = _key(pirate) < _key(position)
-        if (not smaller and left) or (smaller and not left):
-            
+
+        if ((not smaller) and left) or (smaller and (not left)):
             if left: 
                 hashList[1][lastIndex:index] = \
                 Rotation(hashList[1][lastIndex:index] , right = True)
@@ -92,14 +90,12 @@ def _insert(pirate , hashList ,_key=lambda pirate1 : \
                 Rotation(hashList[0][lastIndex:index] , right = False)
 
             #command to the generator to stop
-            gen.send(False)
+            raise StopIteration
 
-        # command to the generator to continue
-        gen.send(True)
     
 def _insertImag(pirate ,hashList):
-    _insert(pirate , hashList , _key = lambda pirate1 : \
-        pirate1.location.imag ,pirate.speed)
+    _insert(pirate , hashList ,pirate.speed , \
+     _key = lambda pirate1 : pirate1.location.imag)
 
 
 def genforSort (Range , _List ,startPosition):
@@ -113,27 +109,21 @@ def genforSort (Range , _List ,startPosition):
         end = len(_List)
 
     index = start
-    flag = True 
     for otherPirate in _List[start:startPosition]:
-        flag = yield index , otherPirate ,True
-        if not flag:
-            break
+        yield index , otherPirate ,False     
         index += 1
 
     index = end
-    if flag :
-        for otherPirate in _List[end , startPosition , -1]:
-            flag = yield index , otherPirate ,False
-            if not flag :
-                break
-            index -= 1
+    for otherPirate in _List[end : startPosition : -1]:
+        yield index , otherPirate ,True
+        index -= 1
 
 def genforbattle(pirate , hashList):
     
     fireRange = pirate.fireRange
 
     gen = genforSort(fireRange ,hashList[1] ,hashLists[0][pirate.id])
-    for index , position , left in gen():
+    for index , position , left in gen:
         if _abs(position.location - pirate.location) < fireRange :
             yield position
         gen.send(True)
@@ -145,13 +135,13 @@ def PiratesItear(pirates , _filter = lambda pirate1 : True):
             yield pirate
 
 
-def battle(pirate , hashReal , hashImag):
+def battle(pirate , hashReal):
     CountEnemey , CountFriends = 0 , 0
     _id = pirate.id
 
-    gen = genforbattle(pirate ,(hashReal , hashImag))
+    gen = genforbattle(pirate ,hashReal)
 
-    for pirate2 in gen() :
+    for pirate2 in gen :
         if pirate2.id == _id :
             CountFriends += 1
         else :
@@ -162,12 +152,9 @@ def battle(pirate , hashReal , hashImag):
 
 
 
-
 #
 # every function as SetSail(,) push a tokens to Stack 
 #
-
-
 
 class TokenCommand(object):
     def __init__(self , function ,arguments):
@@ -175,7 +162,7 @@ class TokenCommand(object):
         command = lambda : function(arguments)
         setattr(self ,"__call__" , command)
 
-class commandsEnum(enum):
+class commandsEnum(Enum):
     pass 
         
     
