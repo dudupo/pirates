@@ -24,11 +24,11 @@ piratesA[2].location = 17 + 3j
 
 
 try:
-	engine.insert(piratesA[2] ,hashlists)
+	engine.updateLists(piratesA[2] ,hashlists)
 
 except StopIteration: 
 	pass # done
-	
+
 print("\nnow one of the pirate is moving... \n")
 
 

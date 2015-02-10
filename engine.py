@@ -55,7 +55,7 @@ pirates   =[]
 #hashImag  = h(index) , pirates
 
 
-def insert(pirate ,hashLists):
+def updateLists(pirate ,hashLists):
     _insert(pirate , hashLists[0] ,pirate.speed)
     _insertImag(pirate , hashLists[1])
     battle(pirate , hashLists[0])
@@ -68,7 +68,7 @@ def _insert(pirate , hashList ,  sortRangeRadious , \
     # the id of pirate is constant
     lastIndex = hashList[0][pirate.id]
     hashList[1][lastIndex] = pirate
-    print(lastIndex)
+
     gen = genforSort(sortRangeRadious , hashList[1] , lastIndex)
 
     # position refers to other pirate , just for buety i called it 'position'
@@ -90,7 +90,7 @@ def _insert(pirate , hashList ,  sortRangeRadious , \
                 Rotation(hashList[0][lastIndex:index] , right = False)
 
             #command to the generator to stop
-            raise StopIteration
+            break
 
     
 def _insertImag(pirate ,hashList):
@@ -122,11 +122,10 @@ def genforbattle(pirate , hashList):
     
     fireRange = pirate.fireRange
 
-    gen = genforSort(fireRange ,hashList[1] ,hashLists[0][pirate.id])
+    gen = genforSort(fireRange ,hashList[1] ,hashList[0][pirate.id])
     for index , position , left in gen:
         if _abs(position.location - pirate.location) < fireRange :
             yield position
-        gen.send(True)
 
 
 def PiratesItear(pirates , _filter = lambda pirate1 : True):
@@ -149,6 +148,8 @@ def battle(pirate , hashReal):
 
     if (CountFriends < CountEnemey):
         pass #'kill'
+
+    print("\n>>>battle have been done ")
 
 
 
