@@ -1,6 +1,8 @@
 
 
+#------------ imports --------------------------------- #
 
+import Enum as enum
 
 #------------- some numeric function ------------------- #
 
@@ -18,7 +20,11 @@ def sign (n):
 def _abs(z):
     return abs(z.real) + abs(z.imag)
 
-
+def Rotation(_list , right = True):
+    if right:
+        return _list[-1] + _list[0:-1]
+    else:
+        return _list[1:] + _list[0]
 
 #--------------- constants ---------------- #
 
@@ -41,55 +47,86 @@ FIRERANGE = 5
 
 
 pirates   =[]
-hashReal  ={}
-hashImag  ={}
 
-satattr(hashReal ,"insert" , _insert)
-satattr(hashImag , "insert" , _insertImag)
+# abstract....
+hashReal  = h(index) , pirates 
+hashImag  = h(index) , pirates
+
+setattr(hashReal ,"insert" , _insert)
+setattr(hashImag , "insert" , _insertImag)
+
+
+
+
+def insert(pirate ,hashLists):
+    _insert(pirate , hashLists[0])
+    _insertImag(pirate , hashLists[1])
+
 
 
 def _insert(pirate , hashList ,_key=lambda pirate1 : \
- pirate1.location.real):
-    hashReal[pirate.id] = pirate 
+ pirate1.location.real , sortRangeRadious = pirate.speed):
+    
+    # the id of pirate is constant
+    lastIndex = hashList[0][pirate.id]
+    hashList[1][lastIndex] = pirate
 
-    sortRangeRadious = pirate.speed
-    start = pirate.id - sortRangeRadious
-    end   = pirate.id + sortRangeRadious + 1
+    gen = genforSort(sortRangeRadious , hashList[1] , lastIndex)
 
-    hashReal[start:end].sort(key = _key)
+    # position refers to other pirate , just for buety i called it 'position'
+    for index , position ,left in gen():
+        smaller = _key(pirate) < _key(position)
+        if (not smaller and left) or (smaller and not left):
+            
+            if left: 
+                hashList[1][lastIndex:index] = \
+                Rotation(hashList[1][lastIndex:index] , right = True)
 
+                hashList[0][lastIndex:index] = \
+                Rotation(hashList[0][lastIndex:index] , right = True)
+            else :
+                hashList[1][lastIndex:index] = \
+                Rotation(hashList[1][lastIndex:index] , right = False)
+
+                hashList[0][lastIndex:index] = \
+                Rotation(hashList[0][lastIndex:index] , right = False)
+
+            #command to the generator to stop
+            gen.send(False)
+
+        # command to the generator to continue
+        gen.send(True)
+    
 def _insertImag(pirate ,hashList):
     _insert(pirate , hashList , _key = lambda pirate1 : \
-        pirate1.location.imag)
+        pirate1.location.imag ,pirate.speed)
 
 
-def runInfireRange (pirate , tuplehash):
-    z = pirate.location
+def genforSort (Range , _List ,startPosition):
+    """generator which help to excute inserting in the sort list"""
+    start = startPosition - Range
+    if start < 0 :
+        start = 0
 
-    # position in the lists
-    position = pirate.id 
+    end = startPosition + Range + 1
+    if end > len(_List):
+        end = len(_List)
 
-    ValueLists = (tuplehash[0].values() , \
-     tuplehash[1].values()) 
-
-    for pirate2 in reversed(ValueLists[:position]):
-
-        realAxeisDistance = abs(z.real - pirate2.location.real)
-        if  realAxeisDistance > FIRERANGE :
+    index = start
+    flag = True 
+    for otherPirate in _List[start:startPosition]:
+        flag = yield index , otherPirate ,True
+        if not flag:
             break
+        index += 1
 
-        imagAxeisDistance = abs(z.imag - pirate2.location.imag)
-        elif realAxeisDistance + imagAxeisDistance < FIRERANGE :
-            yield pirate2  
-
-    for pirate2 in ValueLists[position:]:
-        realAxeisDistance = abs(z.real - pirate2.location.real)
-        if  realAxeisDistance > FIRERANGE :
-            break
-
-        imagAxeisDistance = abs(z.imag - pirate2.location.imag)
-        elif realAxeisDistance + imagAxeisDistance < FIRERANGE :
-            yield pirate2    
+    index = end
+    if flag :
+        for otherPirate in _List[end , startPosition , -1]:
+            flag = yield index , otherPirate ,False
+            if not flag :
+                break
+            index -= 1
 
 def PiratesItear(pirates , _filter = lambda pirate1 : True):
     for pirate in pirates : 
@@ -117,10 +154,24 @@ def battle(pirate , hashReal , hashImag):
 # every function as SetSail(,) push a tokens to Stack 
 #
 
+
+
+class TokenCommand(object):
+    def __init__(self , function ,arguments):
+        self.arguments = arguments
+        command = lambda : function(arguments)
+        setattr(self ,"__call__" , command)
+
+class commandsEnum(enum):
+    pass 
+        
+    
 #Stacklist -> will contain each stack of every player
 def ExecuteTurn (Stacklist):
 
     # for mixing the tokens order 
     jumble = zip(Stacklist)
     for tok in jumble:
+        tok()        
+
         
