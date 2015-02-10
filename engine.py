@@ -128,6 +128,17 @@ def genforSort (Range , _List ,startPosition):
                 break
             index -= 1
 
+def genforbattle(pirate , hashList):
+    
+    fireRange = pirate.fireRange
+
+    gen = genforSort(fireRange ,hashList[1] ,hashLists[0][pirate.id])
+    for index , position , left in gen():
+        if _abs(position.location - pirate.location) < fireRange :
+            yield position
+        gen.send(True)
+
+
 def PiratesItear(pirates , _filter = lambda pirate1 : True):
     for pirate in pirates : 
         if _filter(pirate):
@@ -138,7 +149,9 @@ def battle(pirate , hashReal , hashImag):
     CountEnemey , CountFriends = 0 , 0
     _id = pirate.id
 
-    for pirate2 in runInfireRange(pirate ,(hashReal , hashImag)):
+    gen = genforbattle(pirate ,(hashReal , hashImag))
+
+    for pirate2 in gen() :
         if pirate2.id == _id :
             CountFriends += 1
         else :
