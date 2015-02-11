@@ -7,6 +7,6 @@ class pirate ():
 		self.id = _id
 		self.fireRange = fireRange
 		self.speed = speed
-
+		self.direaction = location 
 	def __str__(self):
-		return ">>>pirate: " + str(self.id) + "\n   location: " + str(self.location) 
+		return ">>>pirate: " + str(self.id) + "\n   location: " + str(self.location)

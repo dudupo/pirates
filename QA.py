@@ -19,7 +19,7 @@ hashlists = hashlistX ,hashlistY
 # lets give to pirate 2 a little speed .  
 piratesA[2].speed = 13
 
-# now we can let him sell .
+# now we can let him sail .
 piratesA[2].location = 17 + 3j
 
 

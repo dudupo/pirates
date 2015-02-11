@@ -43,11 +43,6 @@ FIRERANGE = 5
 #
 #
 
-
-
-
-
-
 pirates   =[]
 
 # abstract....
@@ -58,7 +53,6 @@ pirates   =[]
 def updateLists(pirate ,hashLists):
     _insert(pirate , hashLists[0] ,pirate.speed)
     _insertImag(pirate , hashLists[1])
-    battle(pirate , hashLists[0])
 
 
 
@@ -149,30 +143,7 @@ def battle(pirate , hashReal):
     if (CountFriends < CountEnemey):
         pass #'kill'
 
-    print("\n>>>battle have been done ")
 
 
+  
 
-#
-# every function as SetSail(,) push a tokens to Stack 
-#
-
-class TokenCommand(object):
-    def __init__(self , function ,arguments):
-        self.arguments = arguments
-        command = lambda : function(arguments)
-        setattr(self ,"__call__" , command)
-
-class commandsEnum(Enum):
-    pass 
-        
-    
-#Stacklist -> will contain each stack of every player
-def ExecuteTurn (Stacklist):
-
-    # for mixing the tokens order 
-    jumble = zip(Stacklist)
-    for tok in jumble:
-        tok()        
-
-        
