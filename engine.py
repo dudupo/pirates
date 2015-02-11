@@ -36,25 +36,23 @@ FIRERANGE = 5
 #------------------------------------------ #
 
 
-
-#   location will presant as complex number ,
-
-#   pirates -> two list's sorted by x and y position  
-#
-#
-
-pirates   =[]
+hashLists =[]
+def initHashLists(hashRealIndex ,hashReal , hashImagIndex ,hashImag):
+    global hashLists
+    hashLists = [[hashRealIndex ,hashReal] , [hashImagIndex ,hashImag]]
+    
+    from main import NUM_OF_BOTS 
+    global Tasks
+    Tasks = [[] for _ in range(NUM_OF_BOTS)]
 
 # abstract....
 #hashReal  = h(index) , pirates 
 #hashImag  = h(index) , pirates
 
-
-def updateLists(pirate ,hashLists):
+def updateLists(pirate):
+    global hashLists
     _insert(pirate , hashLists[0] ,pirate.speed)
     _insertImag(pirate , hashLists[1])
-
-
 
 def _insert(pirate , hashList ,  sortRangeRadious , \
     _key=lambda pirate1 : pirate1.location.real ):
@@ -145,5 +143,32 @@ def battle(pirate , hashReal):
 
 
 
-  
+Tasks = []
 
+class _task:
+    def __init__(self , function , arg):
+        self.work = lambda : function(*arg)
+        # self.arg = arg -> for dibuging
+
+def push_Task(Task , player):
+    global Tasks
+    Tasks[player.id] += [Task]
+
+def update():
+    global Tasks
+    
+    tokens = []
+    c = 0
+    while (c < len(Tasks)):
+        c = 0
+        for player in Tasks:
+            if len(player) > 0 :
+                tokens += [player.pop()] 
+            else:
+                c+= 1
+            
+    for Turn in tokens:
+        # print("\n" + str(Turn.arg[0])) -> for dibuging
+        Turn.work()
+    
+    Tasks = []

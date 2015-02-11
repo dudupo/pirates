@@ -3,13 +3,6 @@ NUM_OF_BOTS = 2
 NUM_OF_TURNS=1000
 matrix = None
 
-
-#
-#	meaby should we replace the matrix to list? (which doesn't contain eampty location)
-#
-#
-
-
 import sys
 from _do_turn import _do_turn 
 
