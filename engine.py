@@ -34,16 +34,20 @@ def Rotation(_list , right = True):
 FIRERANGE = 5
 
 #------------------------------------------ #
-
-
-hashLists =[]
-def initHashLists(hashRealIndex ,hashReal , hashImagIndex ,hashImag):
+DeadPirates =[]
+pirates =    []
+hashLists =  []
+def init (_pirates ,hashRealIndex ,hashReal , hashImagIndex ,hashImag):
     global hashLists
     hashLists = [[hashRealIndex ,hashReal] , [hashImagIndex ,hashImag]]
     
     from main import NUM_OF_BOTS 
     global Tasks
     Tasks = [[] for _ in range(NUM_OF_BOTS)]
+
+    global pirates
+    pirates = _pirates
+
 
 # abstract....
 #hashReal  = h(index) , pirates 
@@ -102,47 +106,70 @@ def genforSort (Range , _List ,startPosition):
 
     index = start
     for otherPirate in _List[start:startPosition]:
-        yield index , otherPirate ,False     
+        if otherPirate.alive :
+            yield index , otherPirate ,False     
         index += 1
 
     index = end
     for otherPirate in _List[end : startPosition : -1]:
-        yield index , otherPirate ,True
+        if otherPirate.alive :
+            yield index , otherPirate ,True
         index -= 1
 
-def genforbattle(pirate , hashList):
-    
-    fireRange = pirate.fireRange
 
-    gen = genforSort(fireRange ,hashList[1] ,hashList[0][pirate.id])
-    for index , position , left in gen:
-        if _abs(position.location - pirate.location) < fireRange :
-            yield position
-
-
+        
 def PiratesItear(pirates , _filter = lambda pirate1 : True):
     for pirate in pirates : 
         if _filter(pirate):
             yield pirate
 
 
-def battle(pirate , hashReal):
-    CountEnemey , CountFriends = 0 , 0
-    _id = pirate.id
+def battle():
+    global hashLists
+    global pirates
+    life = {}
 
-    gen = genforbattle(pirate ,hashReal)
+    for pirate in pirates :
+        if pirate.alive :
+            life[pirate] = 0
 
-    for pirate2 in gen :
-        if pirate2.id == _id :
-            CountFriends += 1
-        else :
-            CountEnemey  += 1
+    for pirate in hashLists[0][1]:
+        if pirate.alive :
+            position = hashLists[0][0][pirate.id]
+            start = 0
+            end   = len(hashLists[0][1])
 
-    if (CountFriends < CountEnemey):
-        pass #'kill'
+            for otherPirate in hashLists[0][1][position:start:-1]:
+                if otherPirate.alive :
+                    if pirate.location.real - otherPirate.location.real < pirate.fireRange:
+                        if _abs(pirate.location - otherPirate.location) < pirate.fireRange:
+                            if otherPirate.player.id != pirate.player.id:
+                                life[otherPirate] -= 1
+                            else :
+                                life[otherPirate] += 1
+                    else:
+                        break
+            for otherPirate in hashLists[0][1][position:end]:
+                if otherPirate.alive :
+                    if otherPirate.location.real - pirate.location.real < pirate.fireRange:
+                        if _abs(pirate.location - otherPirate.location) < pirate.fireRange:
+                            if otherPirate.player.id != pirate.player.id:
+                                life[otherPirate] -= 1
+                            else :
+                                life[otherPirate] += 1
+                    else:
+                        break
 
+    global DeadPirates 
 
+    for pirate in pirates :
+        if life[pirate] < 0 :
+            pirate.alive = False
+            pirate.timeToDiead = 40
+            pirate.location = pirate.player.StartLocation()
+            DeadPirates += [pirate]
 
+        # print ("life number of pirate " + str(pirate.id) + " is " + str(life[pirate])) -> for dibuging
 Tasks = []
 
 class _task:
@@ -170,5 +197,20 @@ def update():
     for Turn in tokens:
         # print("\n" + str(Turn.arg[0])) -> for dibuging
         Turn.work()
+
+
+
+    global DeadPirates
+    for pirate in DeadPirates :
+        pirate.timeToDiead -= 1
+
+
+    battle()
+        
+    global pirates
+    for pirate in pirates:
+        pirate.power = pirate.speed
+
     
+
     Tasks = []
