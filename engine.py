@@ -1,4 +1,5 @@
 
+import outPut
 
 #------------ imports --------------------------------- #
 
@@ -22,6 +23,7 @@ def _abs(z):
 
 def Rotation(_list , right = True):
     if len(_list) < 2:
+        # print("\ni was here\n")
         return _list
     if right:
         return _list[1:] + [_list[0]]
@@ -34,6 +36,7 @@ def Rotation(_list , right = True):
 FIRERANGE = 5
 
 #------------------------------------------ #
+Tasks = []
 DeadPirates =[]
 pirates =    []
 hashLists =  []
@@ -42,8 +45,12 @@ def init (_pirates ,hashRealIndex ,hashReal , hashImagIndex ,hashImag):
     hashLists = [[hashRealIndex ,hashReal] , [hashImagIndex ,hashImag]]
     
     from main import NUM_OF_BOTS 
+
+
     global Tasks
     Tasks = [[] for _ in range(NUM_OF_BOTS)]
+
+    restTasks = Tasks
 
     global pirates
     pirates = _pirates
@@ -57,6 +64,7 @@ def updateLists(pirate):
     global hashLists
     _insert(pirate , hashLists[0] ,pirate.speed)
     _insertImag(pirate , hashLists[1])
+    outPut.Add(pirate)
 
 def _insert(pirate , hashList ,  sortRangeRadious , \
     _key=lambda pirate1 : pirate1.location.real ):
@@ -70,20 +78,43 @@ def _insert(pirate , hashList ,  sortRangeRadious , \
     # position refers to other pirate , just for buety i called it 'position'
     for index , position ,left in gen:
         smaller = _key(pirate) < _key(position)
+        grater =  _key(pirate) > _key(position)
 
-        if ((not smaller) and left) or (smaller and (not left)):
+        if (((left) and (smaller)) or ((not left) and (grater))):
             if left: 
-                hashList[1][lastIndex:index] = \
-                Rotation(hashList[1][lastIndex:index] , right = True)
+                lastIndex += 1
+                hashList[1][index:lastIndex] = \
+                Rotation(hashList[1][index:lastIndex] , right = False)
 
-                hashList[0][lastIndex:index] = \
-                Rotation(hashList[0][lastIndex:index] , right = True)
+                hashList[0][index:lastIndex] = \
+                Rotation(hashList[0][index:lastIndex] , right = False)
+                print("-----")
+                print(hashList[0])
+                print("-----")
+
+
             else :
-                hashList[1][lastIndex:index] = \
-                Rotation(hashList[1][lastIndex:index] , right = False)
+                index += 1 
+
+                temp = Rotation(hashList[1][lastIndex:index] , right = True)
+
+                hashList[1][lastIndex:index] = temp
+                
 
                 hashList[0][lastIndex:index] = \
-                Rotation(hashList[0][lastIndex:index] , right = False)
+                Rotation(hashList[0][lastIndex:index] , right = True )
+                print("######")
+                for x in temp:
+                    print(str(x.id) , end =" ")
+                print("######")
+                print(hashList[0])
+                print("######")
+
+
+            for _pirate in hashList[1] :
+                print (_pirate)
+
+            input()
 
             #command to the generator to stop
             break
@@ -102,18 +133,18 @@ def genforSort (Range , _List ,startPosition):
 
     end = startPosition + Range + 1
     if end > len(_List):
-        end = len(_List)
+        end = len(_List) - 1
 
     index = start
     for otherPirate in _List[start:startPosition]:
         if otherPirate.alive :
-            yield index , otherPirate ,False     
+            yield index , otherPirate ,True     
         index += 1
 
     index = end
     for otherPirate in _List[end : startPosition : -1]:
         if otherPirate.alive :
-            yield index , otherPirate ,True
+            yield index , otherPirate ,False
         index -= 1
 
 
@@ -170,7 +201,6 @@ def battle():
             DeadPirates += [pirate]
 
         # print ("life number of pirate " + str(pirate.id) + " is " + str(life[pirate])) -> for dibuging
-Tasks = []
 
 class _task:
     def __init__(self , function , arg):
@@ -185,6 +215,7 @@ def update():
     global Tasks
     
     tokens = []
+    
     c = 0
     while (c < len(Tasks)):
         c = 0
@@ -192,8 +223,8 @@ def update():
             if len(player) > 0 :
                 tokens += [player.pop()] 
             else:
-                c+= 1
-            
+                c += 1
+
     for Turn in tokens:
         # print("\n" + str(Turn.arg[0])) -> for dibuging
         Turn.work()
@@ -212,5 +243,8 @@ def update():
         pirate.power = pirate.speed
 
     
+    from main import NUM_OF_BOTS
+    Tasks = [[] for _ in range(NUM_OF_BOTS)]
 
-    Tasks = []
+
+    outPut.build()

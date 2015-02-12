@@ -25,14 +25,20 @@ class Game:
    
 
     def SetSail(self , pirate , Direaction):
+        
+        def _function(pirate , z):
+            pirate.location += z
+            engine.updateLists(pirate)
+        
         for direact in Direaction:
             pirate.power -= 1
-            pirate.location += Game.direaction[direact]
-
-            Task = engine._task(engine.updateLists , [pirate])
+            Task = engine._task(_function , [pirate ,Game.direaction[direact]])
             engine.push_Task(Task ,self.player)
-
             if pirate.power == 0:
                 break 
+
+        
+
+        
     
 

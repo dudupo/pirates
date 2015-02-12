@@ -6,14 +6,14 @@ import engine
 import player
 
 
-miki = player.Player("miki" , 0)
+miki = player.Player("miki" , 1)
 _game = game.Game(miki)
 
-dudu = player.Player("dudu" , 1)
+dudu = player.Player("dudu" , 0)
 _game2 = game.Game(dudu)
 
 
-
+'''
 piratesA = [pirate.pirate(miki ,2*i + i* 1j, i ,4 ,2) for i in range(0,5)]
 piratesA += [pirate.pirate(dudu ,2*i + i* 1j, i ,4 ,2) for i in range(5,10)]
 
@@ -25,16 +25,27 @@ engine.init(piratesA ,hashlistX[0] , hashlistX[1] , \
 	hashlistY[0] , hashlistY[1 ])
 
 # ---------------------- .  
-piratesA[2].power = 10
-piratesA[6].speed = 2
+piratesA[2].power = 3
+piratesA[2].speed = 3
+piratesA[6].speed = 7
+piratesA[6].power = 7
 # ---------------------- . 
-_game.SetSail(piratesA[2] , "eeeeewwwee")
-_game2.SetSail(piratesA[6] , "www")
+_game.SetSail(piratesA[2] , "eeeeeeeeeeeeeeee")
+_game2.SetSail(piratesA[6] , "wwwwwwww")
 engine.update()
 
 for _pirate in hashlistX[1]:
 	print(_pirate)
+	if not _pirate.alive :
+		print ("^ is dead...")
+'''
 
+_pirate = pirate.pirate(dudu , 0 , 0 , 4 ,100)
+_pirate2 = pirate.pirate(miki ,7 + 11j ,1 ,4 ,100)
 
-
+engine.init([_pirate , _pirate2] ,[0,1] , [_pirate , _pirate2] , \
+	[0,1] , [_pirate , _pirate2])
+_game2.SetSail(_pirate,"eeennneennnnnnnneeenenenenennnneeenenenenennenennnenenenennnneneeeneneneneneneneeenneen")
+_game.SetSail(_pirate2 ,"eeenenenenennnneeenenenenenenennnneneeenenenenene")
+engine.update()
 
