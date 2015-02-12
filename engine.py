@@ -88,33 +88,20 @@ def _insert(pirate , hashList ,  sortRangeRadious , \
 
                 hashList[0][index:lastIndex] = \
                 Rotation(hashList[0][index:lastIndex] , right = False)
-                print("-----")
-                print(hashList[0])
-                print("-----")
+
 
 
             else :
                 index += 1 
 
-                temp = Rotation(hashList[1][lastIndex:index] , right = True)
-
-                hashList[1][lastIndex:index] = temp
+                hashList[1][lastIndex:index] = \
+                Rotation(hashList[1][lastIndex:index] , right = True)
                 
 
                 hashList[0][lastIndex:index] = \
                 Rotation(hashList[0][lastIndex:index] , right = True )
-                print("######")
-                for x in temp:
-                    print(str(x.id) , end =" ")
-                print("######")
-                print(hashList[0])
-                print("######")
 
 
-            for _pirate in hashList[1] :
-                print (_pirate)
-
-            input()
 
             #command to the generator to stop
             break
