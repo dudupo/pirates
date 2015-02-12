@@ -40,12 +40,13 @@ for _pirate in hashlistX[1]:
 		print ("^ is dead...")
 '''
 
-_pirate = pirate.pirate(dudu , 0 , 0 , 4 ,100)
-_pirate2 = pirate.pirate(miki ,7 + 11j ,1 ,4 ,100)
+_pirate = pirate.pirate(dudu , 0 , 0 , 4 ,3)
+_pirate2 = pirate.pirate(miki ,7 + 11j ,1 ,4 ,3)
 
 engine.init([_pirate , _pirate2] ,[0,1] , [_pirate , _pirate2] , \
 	[0,1] , [_pirate , _pirate2])
-_game2.SetSail(_pirate,"eeennneennnnnnnneeenenenenennnneeenenenenennenennnenenenennnneneeeneneneneneneneeenneen")
-_game.SetSail(_pirate2 ,"eeenenenenennnneeenenenenenenennnneneeenenenenene")
-engine.update()
+for i in range(50):
+	_game2.SetSail(_pirate,"en")
+	_game.SetSail(_pirate2 ,"en")
+	engine.update()
 
