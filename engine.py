@@ -234,4 +234,5 @@ def update():
     Tasks = [[] for _ in range(NUM_OF_BOTS)]
 
 
+def build():
     outPut.build()

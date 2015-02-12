@@ -12,7 +12,7 @@ _game = game.Game(miki)
 dudu = player.Player("dudu" , 0)
 _game2 = game.Game(dudu)
 
-
+# with follwing exmple there is a problem 
 '''
 piratesA = [pirate.pirate(miki ,2*i + i* 1j, i ,4 ,2) for i in range(0,5)]
 piratesA += [pirate.pirate(dudu ,2*i + i* 1j, i ,4 ,2) for i in range(5,10)]
@@ -50,3 +50,4 @@ for i in range(50):
 	_game.SetSail(_pirate2 ,"en")
 	engine.update()
 
+engine.build()
