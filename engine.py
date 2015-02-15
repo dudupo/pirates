@@ -239,6 +239,7 @@ def build():
 
 
 players = []
+islands=[]
 turn_stage={
     'movement':0,
     'battle':1,

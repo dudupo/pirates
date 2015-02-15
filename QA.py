@@ -4,7 +4,7 @@ import game
 import pirate
 import engine 
 import player
-
+from bot import Bot
 
 miki = player.Player("miki" , 1)
 _game = game.Game(miki)
@@ -43,11 +43,15 @@ for _pirate in hashlistX[1]:
 _pirate = pirate.pirate(dudu , 0 , 0 , 4 ,3)
 _pirate2 = pirate.pirate(miki ,7 + 11j ,1 ,4 ,3)
 
+_game.pirate =_pirate2
+
 engine.init([_pirate , _pirate2] ,[0,1] , [_pirate , _pirate2] , \
 	[0,1] , [_pirate , _pirate2])
+bot1 = Bot("bot1",_game)
+
 for i in range(50):
 	_game2.SetSail(_pirate,"en")
-	_game.SetSail(_pirate2 ,"en")
-	engine.update()
+	bot1()
+	engine.update() 
 
 engine.build()

@@ -4,7 +4,7 @@ NUM_OF_TURNS=1000
 matrix = None
 
 import sys
-from _do_turn import _do_turn 
+from bot import Bot 
 
 def init_matrix(matrix,width,hight):
 	matrix = [[None]*width]*hight
@@ -20,7 +20,7 @@ def get_player_bots():
 
 	botsNames = sys.argv[1:]
 
-	bots = (_do_turn(botName) for botName in botsNames)
+	bots = (Bot(botName) for botName in botsNames)
 
 	bots = [(bot , bot.do_turn) for bot in bots]
 	
