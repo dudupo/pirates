@@ -3,6 +3,7 @@ from player import Player
 from game import Game
 from pirate import Pirate
 from bot import Bot
+import datetime
 pirates = []
 living_pirates=pirates 
 dead_pirates=[]
@@ -29,6 +30,8 @@ def onboard(location):
 		location.y <0 or location.y >= boardsize.y) 
 
 def init(playernames):
+	f = open('log.txt', 'w')
+	f.write("GAME BETWEEN {}\n\n".format(playernames))
 	for name, pid in zip(playernames,range(len(playernames))):
 		newplayer=Player(name,pid)
 		players.append(newplayer)
@@ -47,6 +50,7 @@ def bind_pirate(pirate):
 	if not onboard(pirate.location):
 		raise Exception("you are trying to bind a {} that is outisde the board".format(pirate.location))
 	pirates.append(pirate)
+	drawmap[(pirate.location.x,pirate.location.y)]=pirate.player.sign
 def spawn_pirate(pirate):
 	dead_pirates.remove(pirate)
 	living_pirates.append(pirate)
@@ -72,7 +76,10 @@ def move(tasks):
 			newlocation = pirate.location+direaction
 			if onboard(newlocation):
 				if (newlocation not in island_areas):
+					last =drawmap[(pirate.location.x,pirate.location.y)]
+					drawmap[(pirate.location.x,pirate.location.y)]='.'
 					pirate.location=newlocation
+					drawmap[(pirate.location.x,pirate.location.y)]=last
 				else:
 					print("WORNING: {} tried to move inside an island".format(pirate))
 			else:
@@ -112,3 +119,22 @@ def update():
 	battle()
 	cap()
 	tasks=[]
+
+drawmap={}
+def draw():
+	todorw=""
+	for y in range(boardsize.y):
+		for x in range(boardsize.x):
+			try:
+				ch = drawmap[(x,y)]
+			except:
+				if (x,y) in island_areas:
+					ch='O'
+				else:
+					ch='.'
+			todorw+=ch
+		todorw+='\n'
+
+	f = open('log.txt', 'a')
+	f.write((todorw)+"\n")
+	f.close()
