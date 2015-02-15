@@ -1,12 +1,12 @@
 import engine 
-
+from vector import Vector
 class Game:
     MAX_AMOUNT_OF_PIRATES=6;
     direaction = {
-        "e"  :     1 , 
-        "w"  :    -1 ,
-        "n"  :    1j ,
-        "s"  :   -1j    }
+        "e"  :    Vector(1, 0) , 
+        "w"  :    Vector(-1,0),
+        "n"  :    Vector(0 ,1),
+        "s"  :    Vector(0,-1)   }
 
     'each player has his own "game" instanse' 
     def __init__(self ,player):
@@ -49,22 +49,10 @@ class Game:
             if islands.get_owner() != self.player:
                 toret.append(island)
         return toret
-    def set_sail(self, pirate,Direaction):
-        self.SetSail(pirate,Direaction)
-    def SetSail(self , pirate , Direaction):
-        if self.player != pirate.player:
-            raise Exception("you have no premmision to do that")
-        def _function(pirate , z):
-            pirate.location += z
-            engine.updateLists(pirate)
-        
-        for direact in Direaction:
-            pirate.power -= 1
-            Task = engine._task(_function , [pirate ,Game.direaction[direact]])
-            engine.push_Task(Task ,self.player)
-            if pirate.power == 0:
-                break 
-
+    def set_sail(self,pirate,direaction):
+        if not isinstance(direaction, Vector):
+            direaction=Game.direaction[direaction]
+        engine.tasks.append(('MOVE',pirate,direaction))
         
 
         

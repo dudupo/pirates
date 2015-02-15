@@ -1,15 +1,14 @@
 class pirate():
-	def __init__(self ,player ,location ,_id ,fireRange , speed):
+	def __init__(self ,player ,location ,_id):
 		self.location = location
 		self.id = _id
-		self.fireRange = fireRange
-		self.speed = speed
-		self.power = speed
 		self.player =  player
 		player._add_pirate(self)
 		self.alive = True
-		self.timeToDiead = 40
+		self.respawn_time = 40
+		self.turns_dead=0
 		self.spawnpoint = player.spawn_area[self.id]
+		self.fire_range=5
 	def __str__(self):
-		return ">>>pirate: " + str(self.id) + "\n   location: " + str(self.location)
+		return "pirate n" + str(self.id)
 
