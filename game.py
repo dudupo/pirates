@@ -24,7 +24,8 @@ class Game:
     def get_not_my_islands(self):
         'returns all of the islands that do not belong to this players'
    
-
+    def set_sail(self, pirate,Direaction):
+        self.SetSail(pirate,Direaction)
     def SetSail(self , pirate , Direaction):
         
         def _function(pirate , z):
