@@ -1,7 +1,7 @@
 
 
 
-mili = 100 
+mili = 50 
 _file = open('out.html' , 'w')
 flag = False
 counter = -1 
