@@ -1,11 +1,25 @@
-import game 
-import pirate
-import engine 
-import player
-i=0
-
+import random
 def do_turn(game):
-	global i 
-	i+=1
-	#if i%50==0:
-	#	print("dani is not doing enything")
+	if len(game.get_not_my_islands())<=0:
+		return
+	for pirate in game.get_my_pirates():
+		target=None
+		mini=1000
+		for island in game.get_not_my_islands():
+			t=distanse(pirate.location,island.location)
+			if t < mini:
+				target=island
+				mini=t
+		
+		if target != None:
+			d = game.get_directions(pirate,target)
+			if len(d) > 0:
+				game.set_sail(pirate,d[0])
+			else:
+				continue
+		
+		else:
+			continue
+	
+def distanse(a,b):
+	return abs(a.x-b.x)+abs(a.y-b.y)

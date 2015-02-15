@@ -5,15 +5,10 @@ import player
 i=0
 
 def do_turn(game):
-	global i 
-	i+=1
-	for pirate in game.get_my_pirates():
-
-		if pirate.location.x<19:
-			game.set_sail(pirate,'e')
-		elif pirate.location.y<10:
-			game.set_sail(pirate,'n')
-		else:
-			pass
-			#if i%50==0:
-			#	print("waiting")
+	if len(game.get_not_my_islands())>0:
+		pirate=game.get_my_pirates()[0]
+		island=game.get_not_my_islands()[0]
+		directions= game.get_directions(pirate,island)
+		if len(directions)>0:
+			direaction=directions[0]
+			game.set_sail(pirate,direaction)

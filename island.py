@@ -5,7 +5,9 @@ class Island:
 	TAKEN_CAP_TIME = EMPTY_CAP_TIME
 	
 	def __init__(self,p):
+		p=p-Vector(1,-1)
 		self.area=[p,p+Vector(1,0),p+Vector(2,0),p+Vector(0,1),p+Vector(1,1),p+Vector(2,1)]
+		self.honey=p+Vector(1,-1)
 		self._owner=None
 		self.tried_to_cap_this_turn ={}
 		self.capscore={}
@@ -20,9 +22,12 @@ class Island:
 			self.tried_to_cap_this_turn[player]=False
 	def get_owner(self):
 		return self._owner
-	def get_postion(self):
-		return self.__posiotin
 
+	@property
+	def location(self):
+	    return self.honey
+
+	
 	def _try_cap(self,pirate):
 		if self._owner==pirate.player:
 			pass
