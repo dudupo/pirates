@@ -7,7 +7,8 @@ class pirate():
 		self.power = speed
 		self.player =  player
 		self.alive = True
-		self.timeToDiead = 40 
+		self.timeToDiead = 40
+		self.spawnpoint = player.spawn_area[self.id]
 	def __str__(self):
 		return ">>>pirate: " + str(self.id) + "\n   location: " + str(self.location)
 
