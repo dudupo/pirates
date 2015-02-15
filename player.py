@@ -1,4 +1,5 @@
 from game import Game
+from vector import Vector
 class Player:
 	def __init__(self,name ,_id):
 		self.name=name
@@ -19,10 +20,15 @@ class Player:
 		if self._spawn_area==None:
 			area=list()
 			numopirates=Game.MAX_AMOUNT_OF_PIRATES
-			#default base 
-			base = 0 + (numopirates)*1j 
-			for x in range(numopirates):
-				area.append(base + x - x*1j)
+			#default base
+			if self.id==0:
+				base = Vector(0,numopirates)
+				for x in range(numopirates):
+					area.append(base + Vector(x,numopirates-x))
+			elif self.id==1:
+				base = Vector(48,numopirates)
+				for x in range(numopirates):
+					area.append(base + Vector(-x,numopirates-x))
 			return area
 		else:
 			return self._spawn_area

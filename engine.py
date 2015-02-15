@@ -1,11 +1,15 @@
 from vector import Vector
-
-
+from player import Player
+from game import Game
+from pirate import Pirate
+from bot import Bot
 pirates = []
 living_pirates=pirates 
 dead_pirates=[]
 
 players = []
+games={}
+bots=[]
 
 islands=[]
 island_areas=list()
@@ -24,11 +28,25 @@ def onboard(location):
 	return not (location.x <0 or location.x >= boardsize.x or \
 		location.y <0 or location.y >= boardsize.y) 
 
+def init(playernames):
+	for name, pid in zip(playernames,range(len(playernames))):
+		newplayer=Player(name,pid)
+		players.append(newplayer)
+		newgame=Game(newplayer)
+		games[newplayer]=newgame
+		bots.append(Bot("bots."+name,newgame))
+		for x in range(Game.MAX_AMOUNT_OF_PIRATES):
+			newpirate = Pirate(newplayer,newplayer.spawn_area[x],x)
+			pirates.append(newpirate)
+			living_pirates.append(newpirate)
+			bind_pirate(newpirate)
+
+
 def bind_pirate(pirate):
 	'binds pirate "pirate" to the game'
-	if onboard(pirate.location):
-		raise Exception("you are trying to bind a pirate that is outisde the board")
-	self.pirates.append(pirate)
+	if not onboard(pirate.location):
+		raise Exception("you are trying to bind a {} that is outisde the board".format(pirate.location))
+	pirates.append(pirate)
 def spawn_pirate(pirate):
 	dead_pirates.remove(pirate)
 	living_pirates.append(pirate)
@@ -73,7 +91,7 @@ def battle():
 			if (other.player!=pirate.player) and (pirate.location.distance_to(other.location) <= pirate.fire_range):
 				attackers[other].append(pirate)
 	
-	for attacked, enemies in attackers:
+	for attacked, enemies in attackers.items():
 		for enemy in enemies:
 			if len(enemies) > len(attackers[enemy]):
 				kill_pirate(attacked)

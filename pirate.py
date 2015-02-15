@@ -1,4 +1,4 @@
-class pirate():
+class Pirate():
 	def __init__(self ,player ,location ,_id):
 		self.location = location
 		self.id = _id
