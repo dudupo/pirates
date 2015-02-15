@@ -16,11 +16,11 @@ class Game:
 
     def get_my_pirates(self):
         'returns all of the pirates belonging to that player '
-        return self.player.__pirates
+        return self.player._pirates
     def get_my_dead_pirates(self):
         'returns a list with all dead pirates'
         daed=list()
-        pirates = self.player.__pirates
+        pirates = self.player._pirates
         for pirate in pirates:
             if not pirate.alive:
                 dead.append(pirate)
@@ -30,7 +30,7 @@ class Game:
         enemy= list()
         for player in engine.players:
             if player != self.player:
-                enemy+=player.__pirates
+                enemy+=player._pirates
         return enemy
     def get_islands(self):
         'returns all islands'

@@ -4,11 +4,11 @@ class Player:
 		self.name=name
 		self.id =_id
 		self._spawn_area=None
-		self.__pirates=list()
+		self._pirates=list()
 	
 	def _add_pirate(self,pirate):
 		pirate.player=self
-		self.__pirates.append(pirate)
+		self._pirates.append(pirate)
 	
 	def StartLocation(self):
 		return 0 + 0j # just for now 

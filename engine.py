@@ -213,7 +213,7 @@ def update():
                 c += 1
 
     for Turn in tokens:
-        # print("\n" + str(Turn.arg[0])) -> for dibuging
+        #print("\n" + str(Turn.arg[0])) -> for dibuging
         Turn.work()
 
 

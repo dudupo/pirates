@@ -42,8 +42,7 @@ for _pirate in hashlistX[1]:
 
 _pirate = pirate.pirate(dudu , 0 , 0 , 4 ,3)
 _pirate2 = pirate.pirate(miki ,7 + 11j ,1 ,4 ,3)
-
-_game.pirate =_pirate2
+print(str(_game.get_my_pirates()) )
 
 engine.init([_pirate , _pirate2] ,[0,1] , [_pirate , _pirate2] , \
 	[0,1] , [_pirate , _pirate2])

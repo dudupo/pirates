@@ -6,6 +6,7 @@ class pirate():
 		self.speed = speed
 		self.power = speed
 		self.player =  player
+		player._add_pirate(self)
 		self.alive = True
 		self.timeToDiead = 40
 		self.spawnpoint = player.spawn_area[self.id]
