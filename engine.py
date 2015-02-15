@@ -30,7 +30,7 @@ def onboard(location):
 		location.y <0 or location.y >= boardsize.y) 
 
 def init(playernames):
-	f = open('log.txt', 'w')
+	f = open('.log', 'w')
 	f.write("GAME BETWEEN {}\n\n".format(playernames))
 	for name, pid in zip(playernames,range(len(playernames))):
 		newplayer=Player(name,pid)
@@ -135,6 +135,6 @@ def draw():
 			todorw+=ch
 		todorw+='\n'
 
-	f = open('log.txt', 'a')
+	f = open('.log', 'a')
 	f.write((todorw)+"\n")
 	f.close()
