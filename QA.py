@@ -2,7 +2,7 @@
 import engine 
 from bot import Bot
 from vector import Vector
-
+import outPut
 engine.init(["miki","dani"])
 
 
@@ -33,3 +33,4 @@ for i in range(200):
 	
 	engine.update() 
 
+outPut.build()
