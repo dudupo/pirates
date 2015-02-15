@@ -119,7 +119,7 @@ def update():
 	battle()
 	cap()
 	tasks=[]
-
+	draw()
 drawmap={}
 def draw():
 	todorw=""
