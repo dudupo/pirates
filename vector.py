@@ -16,7 +16,9 @@ class Vector(tuple):
     @y.setter
     def y(self, value):
         self[1] = value
-    
+    def isadj(self,other):
+        return ((abs(self.x-other.x)==1) and (abs(self.y-other.y)==0)) or ((abs(self.x-other.x)==0) and (abs(self.y-other.y)==1))
+
     def __new__(cls, *V):
         '''The new method, we initialize the coordinates of a vector.
         You can initialize a vector for example: V = Vector() or

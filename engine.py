@@ -4,6 +4,7 @@ from game import Game
 from pirate import Pirate
 from bot import Bot
 import datetime
+from island import Island
 pirates = []
 living_pirates=pirates 
 dead_pirates=[]
@@ -12,10 +13,10 @@ players = []
 games={}
 bots=[]
 
-islands=[]
+islands=[Island(Vector(20,10)),Island(Vector(80,10))]
 island_areas=list()
 for island in islands:
-	island_areas+=islands.area
+	island_areas+=island.area
 
 score_table= {}
 for player in players:
@@ -23,7 +24,9 @@ for player in players:
 
 tasks=[]
 
-boardsize=Vector(50,50)
+debug_turn_message=""
+
+boardsize=Vector(100,50)
 def onboard(location):
 	'returns true if the location is posiotioned on the board'
 	return not (location.x <0 or location.x >= boardsize.x or \
@@ -43,7 +46,8 @@ def init(playernames):
 			pirates.append(newpirate)
 			living_pirates.append(newpirate)
 			bind_pirate(newpirate)
-
+	for island in islands:
+		island.post_init()
 
 def bind_pirate(pirate):
 	'binds pirate "pirate" to the game'
@@ -76,16 +80,29 @@ def move(tasks):
 			newlocation = pirate.location+direaction
 			if onboard(newlocation):
 				if (newlocation not in island_areas):
-					last =drawmap[(pirate.location.x,pirate.location.y)]
-					drawmap[(pirate.location.x,pirate.location.y)]='.'
-					pirate.location=newlocation
-					drawmap[(pirate.location.x,pirate.location.y)]=last
+					flag=True
+					for otherpirate in pirates:
+						if otherpirate!=pirate:
+							if otherpirate.location==newlocation:
+								flag=False
+								break
+					if flag:
+						last =drawmap[(pirate.location.x,pirate.location.y)]
+						drawmap[(pirate.location.x,pirate.location.y)]='.'
+						pirate.location=newlocation
+						drawmap[(pirate.location.x,pirate.location.y)]=last
+					else:
+						#print("WORNING: {} tried to move inside of another pirate".format(pirate))
+						pass
 				else:
-					print("WORNING: {} tried to move inside an island".format(pirate))
+					#print("WORNING: {} tried to move inside an island".format(pirate))
+					pass
 			else:
-				print("WORNING: {} tried to move outise the map".format(pirate))
+				#print("WORNING: {} tried to move outise the map".format(pirate))
+				pass
 		else:
-			print("WORNING: {} tried to move twice or more at the same turn".format(pirate))
+			#print("WORNING: {} tried to move twice or more at the same turn".format(pirate))
+			pass
 	tasks=[]
 def battle():
 	attackers={}
@@ -108,21 +125,33 @@ def battle():
 				kill_pirate(enemy)
 				kill_pirate(attacked)
 def cap():
+	global debug_turn_message
 	for island in islands:
 		for pirate in living_pirates:
-			island._try_cap(pirate)
-
+			for area in island.area:
+				if pirate.location.isadj(area):
+					debug_turn_message="conenction!"
+					island._try_cap(pirate)
+						
+turn=0
 def update():
+	global turn
 	global tasks
+	for island in islands:
+		island.onturn()
 	try_to_revive()
 	move(tasks)
 	battle()
 	cap()
 	tasks=[]
 	draw()
+	turn+=1
+
 drawmap={}
 def draw():
-	todorw=""
+	global turn
+	global debug_turn_message
+	todorw="[TURN "+str(turn)+"] "+debug_turn_message+"\n\n"
 	for y in range(boardsize.y):
 		for x in range(boardsize.x):
 			try:
@@ -136,5 +165,6 @@ def draw():
 		todorw+='\n'
 
 	f = open('.log', 'a')
-	f.write((todorw)+"\n")
+	f.write((todorw)+"\n\n\n")
 	f.close()
+	debug_turn_message=""

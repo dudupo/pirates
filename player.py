@@ -1,5 +1,6 @@
 from game import Game
 from vector import Vector
+import engine
 class Player:
 	def __init__(self,name ,_id):
 		self.name=name
@@ -27,11 +28,11 @@ class Player:
 			if self.id==0:
 				base = Vector(0,numopirates)
 				for x in range(numopirates):
-					area.append(base + Vector(x,numopirates-x))
+					area.append(base + Vector(x,-(numopirates-x)))
 			elif self.id==1:
-				base = Vector(48,numopirates)
+				base = Vector(engine.boardsize.x-1,numopirates)
 				for x in range(numopirates):
-					area.append(base + Vector(-x,numopirates-x))
+					area.append(base + Vector(-x,-(numopirates-x)))
 			return area
 		else:
 			return self._spawn_area
@@ -40,4 +41,5 @@ class Player:
 		if len(value)!=Game.MAX_AMOUNT_OF_PIRATES:
 			raise Exception("spawn area must be at the size of the number of pirates")
 		self._spawn_area=value
-	
+	def __str__(self):
+		return self.name

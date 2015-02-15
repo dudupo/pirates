@@ -7,7 +7,7 @@ engine.init(["miki","dani"])
 
 
 
-for i in range(50):
+for i in range(200):
 	for bot in engine.bots:
 		bot()
 	engine.update() 
