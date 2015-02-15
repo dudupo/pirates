@@ -236,3 +236,11 @@ def update():
 
 def build():
     outPut.build()
+
+
+players = []
+turn_stage={
+    'movement':0,
+    'battle':1,
+    'cap':2
+}
