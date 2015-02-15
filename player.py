@@ -6,7 +6,10 @@ class Player:
 		self.id =_id
 		self._spawn_area=None
 		self._pirates=list()
-	
+		if self.id==0:
+			self.sign='H'
+		elif self.id==1:
+			self.sign='X'	
 	def _add_pirate(self,pirate):
 		pirate.player=self
 		self._pirates.append(pirate)
