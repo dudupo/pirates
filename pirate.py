@@ -1,6 +1,3 @@
-
-
-
 class pirate():
 	def __init__(self ,player ,location ,_id ,fireRange , speed):
 		self.location = location

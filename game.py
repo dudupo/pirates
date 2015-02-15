@@ -1,6 +1,7 @@
 import engine 
 
 class Game:
+    MAX_AMOUNT_OF_PIRATES=6;
     direaction = {
         "e"  :     1 , 
         "w"  :    -1 ,
