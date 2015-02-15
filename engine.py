@@ -19,8 +19,7 @@ for island in islands:
 	island_areas+=island.area
 
 score_table= {}
-for player in players:
-	score_table[player]=0
+
 
 tasks=[]
 
@@ -48,7 +47,8 @@ def init(playernames):
 			bind_pirate(newpirate)
 	for island in islands:
 		island.post_init()
-
+	for player in players:
+		score_table[player]=0
 def bind_pirate(pirate):
 	'binds pirate "pirate" to the game'
 	if not onboard(pirate.location):
@@ -139,12 +139,16 @@ def update():
 	global tasks
 	for island in islands:
 		island.onturn()
+	
 	try_to_revive()
 	move(tasks)
 	battle()
+	
 	cap()
+	
 	tasks=[]
-	draw()
+	
+	#draw()
 	turn+=1
 
 drawmap={}

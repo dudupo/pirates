@@ -14,5 +14,6 @@ def do_turn(game):
 		elif pirate.location.y<10:
 			game.set_sail(pirate,'n')
 		else:
-			if i%5==0:
-				print("waiting")
+			pass
+			#if i%50==0:
+			#	print("waiting")
