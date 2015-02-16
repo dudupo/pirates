@@ -44,7 +44,8 @@ class Island:
 			if self._owner==None and self.capscore[pirate.player] >= Island.EMPTY_CAP_TIME:
 				self._owner=pirate.player
 				print("[TURN {}] player {} captured the island {} ".format(engine.turn,pirate.player,self))
-				
+				for x in pirate.player._pirates:
+					print(x.location)
 			elif self._owner!= None and self.capscore[pirate.player] >=Island.TAKEN_CAP_TIME:
 				self._owner=None
 		else:

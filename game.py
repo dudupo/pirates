@@ -52,8 +52,8 @@ class Game:
 			toret.append('w')
 		if obja.location.x < objb.location.x:
 			toret.append('e')
-		for dire in toret:
+		'''for dire in toret:
 			for p in engine.pirates:
 				if obja.location+Game.direaction[dire]==p.location:
-					toret.remove(dire)
+					toret.remove(dire)'''
 		return toret

@@ -19,7 +19,6 @@ for i in range(200):
 		print(str(winner())+" wins!")
 		break
 	
-	
 	for bot in engine.bots:
 		try:
 			bot()

@@ -5,6 +5,7 @@ from pirate import Pirate
 from bot import Bot
 import datetime
 from island import Island
+
 pirates = []
 living_pirates=[]
 dead_pirates=[]
@@ -86,47 +87,47 @@ def try_to_revive():
 def move(tasks):
 	'moves all the pirates as requested'
 	didnt_move={}
-	wantstomove={}
 	for pirate in pirates:
 		didnt_move[pirate] = pirate.alive
-		wantstomove[pirate]=False
-	
-	for (t, pirate, ad) in tasks:
-		wantstomove[pirate]=True	
-		for (e, comper, bd)in tasks:
-			if pirate!=comper:
-				if pirate.location+ad==comper.location+bd:
-					didnt_move[pirate]=False
-					didnt_move[comper]=False
-	
-	for (taskname, pirate, direaction) in tasks:
-		if didnt_move[pirate]:
-			newlocation = pirate.location+direaction
-			if onboard(newlocation):
-				if (newlocation not in island_areas):
-					flag=True
-					for otherpirate in pirates:
-						if otherpirate!=pirate:
-							if otherpirate.location==newlocation and (not wantstomove[otherpirate]):
-								flag=False
-								break
-					if flag:
-						last =drawmap[(pirate.location.x,pirate.location.y)]
-						drawmap[(pirate.location.x,pirate.location.y)]='-'
-						pirate.location=newlocation
-						drawmap[(pirate.location.x,pirate.location.y)]=last
+
+	def retry(mtask):
+		for (taskname, pirate, direaction) in mtask:
+			fsize=len(mtask)
+			#double turn check
+			if didnt_move[pirate]:
+
+				newlocation = pirate.location+direaction
+				#onboard check
+				if onboard(newlocation):
+					#island check
+					if (newlocation not in island_areas):
+						#colision check
+						if len([i for i in pirates if i!=pirate and i.location==pirate.location])>0:
+
+							last =drawmap[(pirate.location.x,pirate.location.y)]
+							drawmap[(pirate.location.x,pirate.location.y)]='-'
+							pirate.location=location
+							drawmap[(pirate.location.x,pirate.location.y)]=last
+
+							mtask.remove(pirate)
+						else:
+							continue
+							#print("WORNING: {} tried to move inside of another pirate".format(pirate))
+							
 					else:
-						raise("WORNING: {} tried to move inside of another pirate".format(pirate))
-						pass
+						continue
+						#print("WORNING: {} tried to move inside an island".format(pirate))
+					
 				else:
-					print("WORNING: {} tried to move inside an island".format(pirate))
-					pass
+					continue
+					#print("WORNING: {} tried to move outise the map".format(pirate))
+					
 			else:
-				print("WORNING: {} tried to move outise the map".format(pirate))
-				pass
-		else:
-			print("WORNING: {} tried to move twice or more at the same turn".format(pirate))
-			pass
+					continue
+			if len(mtask) ==fsize:
+				print("OH Oh")
+	for pirate,location in tomove.items():
+		
 	tasks=[]
 def battle():
 	attackers={}
