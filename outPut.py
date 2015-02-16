@@ -1,7 +1,7 @@
 
 
 
-_SleepTime = 10
+_SleepTime = 5
 _file = open('out.html' , 'w')
 number_of_printis = 0
 
