@@ -12,7 +12,7 @@ def winner():
 		if score>=WINNING_SCORE:
 			return player
 	return None
-for i in range(200):
+for i in range(2000):
 	if i%50==0:
 		print("Turn {} {} ".format(i,engine.pscore()))
 	if winner() !=None:
@@ -25,10 +25,10 @@ for i in range(200):
 			bot()
 		except:
 			print(bot.game.player.name+" is out of the game due to exception")
-			engine.remove(bot)
+			engine.bots.remove(bot)
 	
 	if len(engine.bots)==1:
-		print(engine.bots[0].player.name+" wins!")
+		print(engine.bots[0].game.player.name+" wins!")
 		break
 	
 	engine.update() 

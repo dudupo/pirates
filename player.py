@@ -15,8 +15,6 @@ class Player:
 		pirate.player=self
 		self._pirates.append(pirate)
 	
-	def StartLocation(self):
-		return 0 + 0j # just for now 
 	
 	@property
 	def spawn_area(self):

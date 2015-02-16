@@ -18,7 +18,7 @@ def init_drawing():
 	for pirate in pirates:
 		images_html_code += "<img id='"+ str(pirate.uniq) + \
 		"' src='pirate"+ str(pirate.player.id) \
-		+ ".png' style='position:absolute' height='42' width='42'/>"
+		+ ".png' style='position:absolute; z-index:1' height='42' width='42'/>"
 
 	from engine import islands
 

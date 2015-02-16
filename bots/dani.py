@@ -4,7 +4,7 @@ def do_turn(game):
 		return
 	for pirate in game.get_my_pirates():
 		target=None
-		mini=1000
+		mini=100000
 		for island in game.get_not_my_islands():
 			t=distanse(pirate.location,island.location)
 			if t < mini:
