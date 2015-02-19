@@ -58,6 +58,9 @@ def init(playernames):
 		score_table[player] = 0
 	outPut.init_drawing()
 
+	for pirate in pirates:
+		outPut.print_change_pirate_location(pirate)
+
 
 
 def bind_pirate(pirate):
@@ -67,6 +70,8 @@ def bind_pirate(pirate):
 	pirates.append(pirate)
 	living_pirates.append(pirate)
 	drawmap[(pirate.location.x,pirate.location.y)]=pirate.player.sign
+	
+
 
 def spawn_pirate(pirate):
 	print("spawning {} ".format(pirate))
@@ -99,11 +104,6 @@ def move(tasks):
 		wantstomove[pirate]=False
 	for (t, pirate, ad) in tasks:
 		wantstomove[pirate]=True    
-		#for (e, comper, bd)in tasks:
-		#	if pirate!=comper:
-		#		if pirate.location+ad==comper.location+bd:
-		#			didnt_move[pirate]=False
-		#			didnt_move[comper]=False
 	
 	for (taskname, pirate, direaction) in tasks:
 			newlocation = pirate.location+direaction
@@ -113,6 +113,7 @@ def move(tasks):
 					pirate.location = newlocation
 					drawmap[(pirate.location.x,pirate.location.y)]=last
 
+					pirate.current_direaction = "0"
 					outPut.print_change_pirate_location(pirate) 
 					
 			else:
@@ -159,6 +160,7 @@ def update():
 	
 	try_to_revive()
 	move(tasks)
+
 	battle()
 	
 	cap()
@@ -195,3 +197,6 @@ def draw():
 	f.write((todorw)+"\n\n\n")
 	f.close()
 	debug_turn_message=""
+
+
+		
