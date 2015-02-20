@@ -15,8 +15,10 @@ def winner():
 for i in range(2000):
 	if i%50==0:
 		print("Turn {} {} ".format(i,engine.pscore()))
-	if winner() !=None:
-		print(str(winner())+" wins!")
+	
+	player = winner()
+	if player != None:
+		print("Turn {} {} ; {} wins! ".format(i,engine.pscore() , player.name))
 		break
 	
 	
@@ -28,7 +30,7 @@ for i in range(2000):
 			engine.bots.remove(bot)
 	
 	if len(engine.bots)==1:
-		print(engine.bots[0].game.player.name+" wins!")
+		print("Turn {} {} ; {} wins! ".format(i,engine.pscore() , engine.bots[0].game.player.name))
 		break
 	
 	engine.update() 

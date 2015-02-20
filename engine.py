@@ -29,7 +29,6 @@ for island in islands:
 
 score_table= {}
 
-
 tasks=[]
 
 debug_turn_message=""
@@ -156,8 +155,14 @@ turn=0
 def update():
 	global turn
 	global tasks
+	
 	for island in islands:
 		island.onturn()
+
+	for (player ,game) in games.items() :
+		if len(game.get_my_islands()) > 0 :
+			score_table[player] += 2** (len(game.get_my_islands())-1)
+
 	
 	try_to_revive()
 	move(tasks)

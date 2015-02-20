@@ -16,8 +16,8 @@ class Island:
 		for player in engine.players:
 			self.capscore[player]=0
 	def onturn(self):
-		if self._owner!=None:
-			engine.score_table[self._owner]+=1
+		#if self._owner!=None:
+		#	engine.score_table[self._owner]+=1
 		for player in engine.players:
 			self.tried_to_cap_this_turn[player]=False
 	def get_owner(self):
