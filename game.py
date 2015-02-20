@@ -38,6 +38,7 @@ class Game:
     def get_not_my_islands(self):
         'returns all of the islands that do not belong to this players'
         return [i for i in engine.islands if i.get_owner() != self.player]
+    
     def set_sail(self,pirate,direaction):
         
         if not isinstance(direaction , list):
@@ -49,6 +50,8 @@ class Game:
                     p_next_location = p.location + Game.direaction[p.current_direaction]
                     if pirate.location+Game.direaction[dire] == p_next_location:
                         direaction.remove(dire)
+                        break
+
             
         if len(direaction) > 0 :
             direaction = direaction[0]
@@ -64,15 +67,21 @@ class Game:
 
     def get_directions(self,obja,objb):
         toret=list()
-        if obja.location.y > objb.location.y:
-            toret.append('s')
-        if obja.location.y < objb.location.y:
-            toret.append('n')
-        if obja.location.x > objb.location.x:
-            toret.append('w')
-        if obja.location.x < objb.location.x:
-            toret.append('e')
         
+        num_of_south =  obja.location.y - objb.location.y 
+        num_of_north =  objb.location.y - obja.location.y 
+        num_of_east  =  objb.location.x - obja.location.x 
+        num_of_weast =  obja.location.x - objb.location.x 
+
+        if num_of_south > 0 :
+            toret += (['s'] * num_of_south)
+        if num_of_weast > 0:
+            toret += (['w'] * num_of_weast)
+        if num_of_north > 0:
+            toret += (['n'] * num_of_north)
+        if num_of_east > 0 :
+            toret += (['e'] * num_of_east) 
+
         '''
         for dire in toret:
             for p in engine.pirates:

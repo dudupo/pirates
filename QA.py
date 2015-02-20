@@ -7,11 +7,10 @@ import random
 
 start = random.choice([True,False])
 
-bots = ["miki" , "dani"]
+bots = ["bot2" , "dani"]
 
 if not start :
-	bots = ["dani" , "miki"]
-
+	bots = [bots[1]] + [bots[0]]
 engine.init(bots)
 
 
