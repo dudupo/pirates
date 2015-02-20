@@ -56,6 +56,7 @@ def init(playernames):
 	for player in players:
 		score_table[player] = 0
 	outPut.init_drawing()
+	outPut.open_bloack()
 
 	for pirate in pirates:
 		outPut.print_change_pirate_location(pirate)
@@ -84,6 +85,7 @@ def kill_pirate(pirate):
 		living_pirates.remove(pirate)
 		dead_pirates.append(pirate)
 		pirate.location=pirate.spawnpoint
+		outPut.open_bloack()
 		outPut.print_change_pirate_location(pirate)
 		pirate.turns_dead=0
 
@@ -104,6 +106,7 @@ def move(tasks):
 	for (t, pirate, ad) in tasks:
 		wantstomove[pirate]=True    
 	
+	outPut.open_bloack()
 	for (taskname, pirate, direaction) in tasks:
 			newlocation = pirate.location+direaction
 			if onboard(newlocation):
@@ -118,6 +121,7 @@ def move(tasks):
 			else:
 				print("WORNING: {} tried to move outise the map".format(pirate))
 				continue
+
 	tasks=[]
 def battle():
 	attackers={}

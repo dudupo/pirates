@@ -1,5 +1,6 @@
 import random
 def do_turn(game):
+	
 	if len(game.get_not_my_islands())<=0:
 		return
 	for pirate in game.get_my_pirates():

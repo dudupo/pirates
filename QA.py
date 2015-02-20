@@ -4,7 +4,7 @@ from bot import Bot
 from vector import Vector
 import outPut
 
-engine.init(["bot1","dani"])
+engine.init(["miki","dani"])
 
 
 def winner():

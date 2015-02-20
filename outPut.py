@@ -1,7 +1,7 @@
 
 
 
-_SleepTime = 5
+_SleepTime = 10
 _file = open('out.html' , 'w')
 number_of_printis = 0
 
@@ -27,7 +27,7 @@ def init_drawing():
 		".png' style='position:absolute" + ";left:" +str(island.location.x*7) + "px ;top:" + \
 		str(island.location.y*7) + "px' height='42' width='42'/>"
 
-
+	
 
 	global html_code
 	#just html code
@@ -45,25 +45,32 @@ def init_drawing():
 				"</body>" + \
 				"</html>"
 
+
+
+def open_bloack():
+	global html_code 
+	html_code += "setTimeout(" + \
+		"function(){"
+
+	global number_of_printis
+	number_of_printis += 1
+
+
 # called when one of the pirates Change is location
 def print_change_pirate_location(pirate):
 	global _SleepTime
 	global flag 
 	global html_code
-	global number_of_printis
-
 	_SleepTimeString = str(_SleepTime)
-
 
 	javascript = ""
 
-	javascript +="setTimeout(" + \
-		"function(){" +\
-		"var x = document.getElementById('"+str(pirate.uniq)+"');"+\
-		"x.style.left = '"+ str(pirate.location.x*7) +"px';"+\
-		"x.style.top= '" + str(pirate.location.y*7) +"px';"
+	javascript += \
+		"var x"+str(pirate.uniq)+" = document.getElementById('"+str(pirate.uniq)+"');"+\
+		"x"+str(pirate.uniq)+".style.left = '"+ str(pirate.location.x*7) +"px';"+\
+		"x"+str(pirate.uniq)+".style.top= '" + str(pirate.location.y*7) +"px';"
 	
-	number_of_printis += 1
+	
 
 	html_code += javascript
 
