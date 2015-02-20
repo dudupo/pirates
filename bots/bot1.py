@@ -8,7 +8,7 @@ class Runer():
 	def __init__(self ,game , runer):
 		self.esacpe = False
 		self.esacpe_value = None
-		self.esacpe_counter = 3
+		self.esacpe_counter = 1
 		self._Distance = []
 		self.runer = runer
 		self.game = game
@@ -51,7 +51,7 @@ class Runer():
 						if not (prev is None) :
 							an1 = distanse(v[e] - prev , zero)
 							if not (an is None) :				
-								if (an1 - an> 0) or distanse(v[e],zero)  > 20:
+								if (an1 - an> 0) or distanse(v[e],zero)  > 15:
 									attack_me[e] = False
 							an = an1
 						prev = v[e]
@@ -88,22 +88,8 @@ class ooo():
 
 
 def Move_to_Closer_Island(game , pirate , runer):
-	target= game.get_not_my_islands()[0]
-	mini = 1000	
-	second = game.get_not_my_islands()[0]
+	target= random.choice(game.get_not_my_islands())
 
-	if target is None :
-		return 
-
-	for island in game.get_not_my_islands():
-		t = distanse(pirate.location , island.location)
-		if t < mini :
-			mini = t 
-			second = target
-			target = island
-
-	if pirate.uniq % 2 == 0:
-		target = second
 
 	if target != None :
 		d = game.get_directions(pirate, target)
