@@ -44,6 +44,10 @@ class Game:
         engine.tasks.append(('MOVE',pirate,direaction))
         
 
+    # now i noting that thre is a problem with this .
+    # it isn't urgent so i will fix it sometime in the near futhere . 
+    # in overall , we need to move the Cheaking-loop ('for dire in ...') to set_sail .
+    # it may impair ouer 'dani-bot' .
     def get_directions(self,obja,objb):
         toret=list()
         if obja.location.y > objb.location.y:
