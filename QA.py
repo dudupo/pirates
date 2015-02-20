@@ -3,8 +3,16 @@ import engine
 from bot import Bot
 from vector import Vector
 import outPut
+import random 
 
-engine.init(["miki","dani"])
+start = random.choice([True,False])
+
+bots = ["miki" , "dani"]
+
+if not start :
+	bots = ["dani" , "miki"]
+
+engine.init(bots)
 
 
 def winner():
