@@ -13,6 +13,9 @@ class Runer():
 		self.runer = runer
 		self.game = game
 		self.target = None
+		self.c = 10
+		#if self.game.get_my_pirates()[0].location.x  < 7 :
+		#	self.c = -10
 
 	def _do_turn(self):
 		
@@ -25,7 +28,7 @@ class Runer():
 				ret = self.game.set_sail(self.runer , self.esacpe_value[0])
 				if not ret :
 					self.game.set_sail(self.runer , self.esacpe_value[-1])
-				self.esacpe_counter -= 3
+				self.esacpe_counter -= 1
 			else :
 				self.esacpe = False
 		else :
@@ -38,7 +41,7 @@ class Runer():
 			self._Distance += [[enemy.location - self.runer.location for enemy in enemys]]
 
 			if len(self._Distance ) > 8:
-				_distance = self._Distance[-5:]
+				_distance = self._Distance[-3:]
 
 
 				attack_me = [True for _ in _distance[0]]
@@ -51,13 +54,12 @@ class Runer():
 						if not (prev is None) :
 							an1 = distanse(v[e] - prev , zero)
 							if not (an is None) :				
-								if (an1 - an> 0) or distanse(v[e],zero)  > 15:
+								if (an1 - an > 1) or distanse(v[e],zero)  > 15:
 									attack_me[e] = False
 							an = an1
 						prev = v[e]
 
 				if not any(attack_me):
-					
 					if not self.target in self.game.get_not_my_islands(): 
 						Move_to_Closer_Island(self.game , self.runer , self)
 					else :
@@ -71,7 +73,7 @@ class Runer():
 					for (i , who_is_attack) in zip([i for i in range(len(attack_me))], attack_me):
 						if who_is_attack :
 							traget = ooo()
-							setattr(traget , 'location' ,self.runer.location - (2*self._Distance[-1][i]))
+							setattr(traget , 'location' ,self.runer.location - (self.c*self._Distance[-1][i]))
 							d = self.game.get_directions(self.runer ,traget)
 							self.esacpe = True
 							self.esacpe_value = d
@@ -88,7 +90,12 @@ class ooo():
 
 
 def Move_to_Closer_Island(game , pirate , runer):
-	target= random.choice(game.get_not_my_islands())
+	target = None
+
+	if len(game.get_enemy_islands()) > 0 :
+		target= random.choice(game.get_enemy_islands())
+	elif len(game.get_not_my_islands()) > 0:
+		target= random.choice(game.get_not_my_islands())
 
 
 	if target != None :

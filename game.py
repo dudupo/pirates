@@ -38,7 +38,9 @@ class Game:
     def get_not_my_islands(self):
         'returns all of the islands that do not belong to this players'
         return [i for i in engine.islands if i.get_owner() != self.player]
-    
+    def get_enemy_islands(self):
+        return [i for i in engine.islands if (i.get_owner() != self.player) and (i.get_owner() != None) ]
+
     def set_sail(self,pirate,direaction):
         
         if not isinstance(direaction , list):
