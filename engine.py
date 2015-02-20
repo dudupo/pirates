@@ -40,8 +40,8 @@ def onboard(location):
 		location.y <0 or location.y >= boardsize.y) 
 
 def init(playernames):
-	f = open('.log', 'w')
-	f.write("GAME BETWEEN {}\n\n".format(playernames))
+	#f = open('.log', 'w')
+	#f.write("GAME BETWEEN {}\n\n".format(playernames))
 	for name, pid in zip(playernames,range(len(playernames))):
 		newplayer=Player(name,pid)
 		players.append(newplayer)
@@ -69,7 +69,7 @@ def bind_pirate(pirate):
 		raise Exception("you are trying to bind a {} that is outisde the board".format(pirate.location))
 	pirates.append(pirate)
 	living_pirates.append(pirate)
-	drawmap[(pirate.location.x,pirate.location.y)]=pirate.player.sign
+	#drawmap[(pirate.location.x,pirate.location.y)]=pirate.player.sign
 	
 
 
@@ -77,7 +77,7 @@ def spawn_pirate(pirate):
 	print("spawning {} ".format(pirate))
 	dead_pirates.remove(pirate)
 	living_pirates.append(pirate)
-	drawmap[(pirate.location.x,pirate.location.y)]=pirate.player.sign
+	#drawmap[(pirate.location.x,pirate.location.y)]=pirate.player.sign
 
 def kill_pirate(pirate):
 	drawmap[(pirate.location.x,pirate.location.y)]='-'
@@ -108,13 +108,11 @@ def move(tasks):
 	
 	outPut.open_bloack()
 	for (taskname, pirate, direaction) in tasks:
+			
 			newlocation = pirate.location+direaction
+			
 			if onboard(newlocation):
-					last =drawmap[(pirate.location.x,pirate.location.y)]
-					drawmap[(pirate.location.x,pirate.location.y)]='-'
 					pirate.location = newlocation
-					drawmap[(pirate.location.x,pirate.location.y)]=last
-
 					pirate.current_direaction = "0"
 					outPut.print_change_pirate_location(pirate) 
 					
@@ -177,7 +175,7 @@ def update():
 	
 	tasks=[]
 	
-	draw()
+	#draw()
 	turn+=1
 
 drawmap={}
