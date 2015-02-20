@@ -3,7 +3,8 @@ import engine
 from bot import Bot
 from vector import Vector
 import outPut
-engine.init(["miki","dani"])
+
+engine.init(["bot1","dani"])
 
 
 def winner():
@@ -12,6 +13,8 @@ def winner():
 		if score>=WINNING_SCORE:
 			return player
 	return None
+
+
 for i in range(2000):
 	if i%50==0:
 		print("Turn {} {} ".format(i,engine.pscore()))
