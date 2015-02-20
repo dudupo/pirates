@@ -131,6 +131,7 @@ def battle():
 			if (other.player!=pirate.player) and (pirate.location.distance_to(other.location) <= pirate.fire_range):
 				attackers[other].append(pirate)
 	
+
 	for attacked, enemies in attackers.items():
 		for enemy in enemies:
 			if len(enemies) > len(attackers[enemy]):
@@ -146,7 +147,7 @@ def cap():
 	global debug_turn_message
 	for island in islands:
 		for pirate in living_pirates:
-			for area in island.area:
+			for area in island.area :
 				if pirate.location.isadj(area):
 					debug_turn_message="conenction!"
 					island._try_cap(pirate)

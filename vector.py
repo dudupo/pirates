@@ -120,7 +120,7 @@ class Vector(tuple):
     
     def distance_to(self, other):
         """ uses the Euclidean norm to calculate the distance """
-        return hypot((self.x - other.x), (self.y - other.y))
+        return int(abs(self.x - other.x)) + int(abs(self.y - other.y))
     
     def tofloat(self):
         ''' It converts a vector to float vector.'''

@@ -34,3 +34,6 @@ for i in range(2000):
 	engine.update() 
 
 outPut.build()
+
+from os import system 
+system("out.html")

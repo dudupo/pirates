@@ -24,8 +24,8 @@ def init_drawing():
 
 	for island in islands:			
 		images_html_code += "<img src='island" + \
-		".png' style='position:absolute" + ";left:" +str(island.location.x*5) + "px ;top:" + \
-		str(island.location.y*5) + "px' height='42' width='42'/>"
+		".png' style='position:absolute" + ";left:" +str(island.location.x*7) + "px ;top:" + \
+		str(island.location.y*7) + "px' height='42' width='42'/>"
 
 
 
@@ -60,8 +60,8 @@ def print_change_pirate_location(pirate):
 	javascript +="setTimeout(" + \
 		"function(){" +\
 		"var x = document.getElementById('"+str(pirate.uniq)+"');"+\
-		"x.style.left = '"+ str(pirate.location.x*5) +"px';"+\
-		"x.style.top= '" + str(pirate.location.y*5) +"px';"
+		"x.style.left = '"+ str(pirate.location.x*7) +"px';"+\
+		"x.style.top= '" + str(pirate.location.y*7) +"px';"
 	
 	number_of_printis += 1
 
@@ -84,5 +84,7 @@ def build():
 
 	html_code += end_html_code
 	_file.write(html_code)
+
+	_file.close()
 
 
