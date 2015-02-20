@@ -5,7 +5,7 @@ import vector
 
 class Runer():
 
-	def __init__(self ,game , runer):
+	def __init__(self ,game , runer , searching):
 		self.esacpe = False
 		self.esacpe_value = None
 		self.esacpe_counter = 1
@@ -14,6 +14,7 @@ class Runer():
 		self.game = game
 		self.target = None
 		self.c = 10
+		self.searching = searching
 		#if self.game.get_my_pirates()[0].location.x  < 7 :
 		#	self.c = -10
 
@@ -92,10 +93,12 @@ class ooo():
 def Move_to_Closer_Island(game , pirate , runer):
 	target = None
 
-	if len(game.get_enemy_islands()) > 0 :
-		target= random.choice(game.get_enemy_islands())
-	elif len(game.get_not_my_islands()) > 0:
-		target= random.choice(game.get_not_my_islands())
+	r1 = [i for i in game.get_enemy_islands() if not i in runer.searching] 
+	r2 = [i for i in game.get_not_my_islands() if not i in runer.searching]
+	if len(r1) > 0 :
+		target= random.choice(r1)
+	elif len(r2) > 0:
+		target= random.choice(r2)
 
 
 	if target != None :
@@ -103,6 +106,7 @@ def Move_to_Closer_Island(game , pirate , runer):
 		if len(d) > 0:
 			ret = game.set_sail(pirate, d[0])
 			runer.target = target	
+			runer.searching += [target]
 		
 	
 def distanse(a,b):
