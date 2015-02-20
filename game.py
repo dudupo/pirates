@@ -39,15 +39,29 @@ class Game:
         'returns all of the islands that do not belong to this players'
         return [i for i in engine.islands if i.get_owner() != self.player]
     def set_sail(self,pirate,direaction):
-        if not isinstance(direaction, Vector):
+        
+        if not isinstance(direaction , list):
+            direaction = [direaction]
+
+        for dire in direaction:
+            for p in engine.pirates:
+                if p.uniq != pirate.uniq :
+                    p_next_location = p.location + Game.direaction[p.current_direaction]
+                    if pirate.location+Game.direaction[dire] == p_next_location:
+                        direaction.remove(dire)
+            
+        if len(direaction) > 0 :
+            direaction = direaction[0]
+            pirate.current_direaction = direaction
             direaction=Game.direaction[direaction]
-        engine.tasks.append(('MOVE',pirate,direaction))
+            engine.tasks.append(('MOVE',pirate,direaction))
+            return True
+        else :
+            return False 
         
 
-    # now i noting that thre is a problem with this .
-    # it isn't urgent so i will fix it sometime in the near futhere . 
-    # in overall , we need to move the Cheaking-loop ('for dire in ...') to set_sail .
-    # it may impair ouer 'dani-bot' .
+
+
     def get_directions(self,obja,objb):
         toret=list()
         if obja.location.y > objb.location.y:
@@ -58,7 +72,8 @@ class Game:
             toret.append('w')
         if obja.location.x < objb.location.x:
             toret.append('e')
-
+        
+        '''
         for dire in toret:
             for p in engine.pirates:
                 if p.uniq != obja.uniq :
@@ -69,5 +84,6 @@ class Game:
 
         if isinstance(obja ,Pirate) and len(toret) > 0:
             obja.current_direaction = toret[0]
+        '''
 
         return toret
