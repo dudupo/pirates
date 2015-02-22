@@ -1,4 +1,5 @@
 from math import hypot
+from math import *
 class Vector(tuple):
 
     '''"Class to calculate the usual operations with vectors in bi and

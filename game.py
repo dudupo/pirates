@@ -39,7 +39,7 @@ class Game:
         'returns all of the islands that do not belong to this players'
         return [i for i in engine.islands if i.get_owner() != self.player]
     def get_enemy_islands(self):
-        return [i for i in engine.islands if (i.get_owner() != self.player) and (i.get_owner() != None) ]
+        return [i for i in engine.islands if ((i.get_owner() != self.player) and (i.get_owner() != None)) ]
 
     def set_sail(self,pirate,direaction):
         
@@ -83,6 +83,7 @@ class Game:
             toret += (['n'] * num_of_north)
         if num_of_east > 0 :
             toret += (['e'] * num_of_east) 
+        
 
         '''
         for dire in toret:

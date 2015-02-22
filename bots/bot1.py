@@ -3,9 +3,28 @@
 import random 
 import vector
 
+class Attacker():
+	def __init__(self , game ,attacker):
+		self.game = game
+		self.attacker = attacker
+
+	def _do_turn(self):
+		enemys = self.game.get_enemy_pirates()
+		if len(enemys) > 0:
+			enemys = [enemy for enemy in enemys if enemy.alive]
+		
+		if len(enemys) > 0:
+			enemy = min(enemys , key = lambda enemy : distanse(self.attacker.location ,enemy.location))
+			d= self.game.get_directions(self.attacker ,enemy)
+			if len(d) > 0:
+				self.game.set_sail(self.attacker , d[0])
+
+
+
+
 class Runer():
 
-	def __init__(self ,game , runer , searching):
+	def __init__(self ,game , runer):
 		self.esacpe = False
 		self.esacpe_value = None
 		self.esacpe_counter = 1
@@ -14,32 +33,30 @@ class Runer():
 		self.game = game
 		self.target = None
 		self.c = 10
-		self.searching = searching
 		#if self.game.get_my_pirates()[0].location.x  < 7 :
 		#	self.c = -10
 
-	def _do_turn(self):
+
+	def _esacpe(self):
 		
+		if self.esacpe_counter > 0 :
+			self.game.set_sail(self.runer ,random.choice(self.esacpe_value))
+			self.esacpe_counter -= 1
+		else :
+			self.esacpe = False
+			self._do_turn()
+
+	def _do_turn(self ,attack = None):
+		
+		enemys = self.game.get_enemy_pirates()
+		self._Distance += [[enemy.location - self.runer.location for enemy in enemys]]
 
 		if self.esacpe :
-			enemys = self.game.get_enemy_pirates()
-			self._Distance += [[enemy.location - self.runer.location for enemy in enemys]]
-
-			if self.esacpe_counter > 0 :
-				ret = self.game.set_sail(self.runer , self.esacpe_value[0])
-				if not ret :
-					self.game.set_sail(self.runer , self.esacpe_value[-1])
-				self.esacpe_counter -= 1
-			else :
-				self.esacpe = False
+			self._esacpe()
+		
 		else :
-
 			self.esacpe_counter = 1
 			
-			
-			enemys = self.game.get_enemy_pirates()
-
-			self._Distance += [[enemy.location - self.runer.location for enemy in enemys]]
 
 			if len(self._Distance ) > 8:
 				_distance = self._Distance[-3:]
@@ -55,32 +72,47 @@ class Runer():
 						if not (prev is None) :
 							an1 = distanse(v[e] - prev , zero)
 							if not (an is None) :				
-								if (an1 - an > 1) or distanse(v[e],zero)  > 15:
+								if (an1 - an > 0) or distanse(v[e],zero)  > 8:
 									attack_me[e] = False
 							an = an1
 						prev = v[e]
 
 				if not any(attack_me):
-					if not self.target in self.game.get_not_my_islands(): 
-						Move_to_Closer_Island(self.game , self.runer , self)
+
+					flag = (not self.target in self.game.get_not_my_islands()) and \
+					len(self.game.get_not_my_islands()) > 0
+
+					if flag: 
+						Move_to_Random_Island(self.game , self.runer , self)
 					else :
 						d = self.game.get_directions(self.runer , self.target)
 						if len(d) > 0 :
-							ret = self.game.set_sail(self.runer , d[0])
-							if not ret :
-								ret = self.game.set_sail(self.runer , d[-1])
+							ret = self.game.set_sail(self.runer , random.choice(d))
 						return	
 				else :
+					b = False
+					v = self.runer.location
 					for (i , who_is_attack) in zip([i for i in range(len(attack_me))], attack_me):
-						if who_is_attack :
-							traget = ooo()
-							setattr(traget , 'location' ,self.runer.location - (self.c*self._Distance[-1][i]))
-							d = self.game.get_directions(self.runer ,traget)
+						if who_is_attack : 
+
+							m = distanse(self._Distance[-1][i] , zero)
+							m = 1000000 / m
+							m = int(m)
+							v = v -  (self._Distance[-1][i]*m)
+							b = True
+					if b :
+						traget = ooo()
+						setattr(traget , 'location' ,v)
+						d = self.game.get_directions(self.runer ,traget)
+						if len(d) > 0:
 							self.esacpe = True
 							self.esacpe_value = d
-							if len(d) > 0:
-								self.game.set_sail(self.runer ,d[0])
-							break 
+							self.game.set_sail(self.runer ,random.choice(d))
+							self.target = None
+			else:
+				Move_to_Random_Island(self.game ,self.runer , self)
+
+							 
 
 
 class ooo():
@@ -90,24 +122,28 @@ class ooo():
 		
 
 
-def Move_to_Closer_Island(game , pirate , runer):
-	target = None
-
-	r1 = [i for i in game.get_enemy_islands() if not i in runer.searching] 
-	r2 = [i for i in game.get_not_my_islands() if not i in runer.searching]
-	if len(r1) > 0 :
-		target= random.choice(r1)
-	elif len(r2) > 0:
-		target= random.choice(r2)
+def Move_to_Random_Island(game , pirate , runer):
+	target = list()
 
 
-	if target != None :
+
+	if len(game.get_enemy_islands()) > 0 :
+		target+= game.get_enemy_islands()
+	if len(game.get_not_my_islands()) > 0:
+		target+= game.get_not_my_islands()
+	else :
+		target+= game.get_my_islands()
+	if len(target) > 0 :
+		target = random.choice(target)
+
 		d = game.get_directions(pirate, target)
 		if len(d) > 0:
-			ret = game.set_sail(pirate, d[0])
+			ret = game.set_sail(pirate, random.choice(d))
 			runer.target = target	
-			runer.searching += [target]
-		
+	
+
+
+
 	
 def distanse(a,b):
 	return abs(a.x-b.x)+abs(a.y-b.y)

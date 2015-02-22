@@ -7,7 +7,7 @@ import random
 
 start = random.choice([True,False])
 
-bots = ["bot2" , "dani"]
+bots = ["dani" , "bot2"]
 
 if not start :
 	bots = [bots[1]] + [bots[0]]
@@ -15,7 +15,7 @@ engine.init(bots)
 
 
 def winner():
-	WINNING_SCORE=1000
+	WINNING_SCORE=10000
 	for player, score in engine.score_table.items():
 		if score>=WINNING_SCORE:
 			return player

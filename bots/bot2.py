@@ -2,22 +2,23 @@ import bots.bot1
 
 init = True
 runers = []
-searching=[[] ,[] ,[]]
+attackers =[]
 
 def do_turn(game):
 	
 	global init
 	global runers
-	global searching
+	global attackers 
 
 	if init :
-		c = 0
-		for pirate in game.get_my_pirates():
-			runers.append(bots.bot1.Runer(game ,pirate , searching[c]))
-			c+= 1
-			c%=3
+		for pirate in game.get_my_pirates()[0:3]:
+			runers.append(bots.bot1.Runer(game ,pirate))
+		for pirate in game.get_my_pirates()[3:6]:
+			attackers.append(bots.bot1.Attacker(game,pirate))
 		init = False 
 
 	for runer in runers:
 		runer._do_turn() 
+	for attacker in attackers :
+		attacker._do_turn()
 
