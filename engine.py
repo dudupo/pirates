@@ -74,7 +74,7 @@ def bind_pirate(pirate):
 
 
 def spawn_pirate(pirate):
-	print("spawning {} ".format(pirate))
+	#print("spawning {} ".format(pirate))
 	dead_pirates.remove(pirate)
 	living_pirates.append(pirate)
 	#drawmap[(pirate.location.x,pirate.location.y)]=pirate.player.sign
@@ -117,7 +117,7 @@ def move(tasks):
 					outPut.print_change_pirate_location(pirate) 
 					
 			else:
-				print("WORNING: {} tried to move outise the map".format(pirate))
+				#print("WORNING: {} tried to move outise the map".format(pirate))
 				continue
 
 	tasks=[]

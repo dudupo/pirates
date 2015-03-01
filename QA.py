@@ -15,14 +15,14 @@ engine.init(bots)
 
 
 def winner():
-	WINNING_SCORE=10000
+	WINNING_SCORE=3000
 	for player, score in engine.score_table.items():
 		if score>=WINNING_SCORE:
 			return player
 	return None
 
 
-for i in range(2000):
+for i in range(3000):
 	if i%50==0:
 		print("Turn {} {} ".format(i,engine.pscore()))
 	
@@ -33,11 +33,13 @@ for i in range(2000):
 	
 	
 	for bot in engine.bots:
+		
 		try:
 			bot()
 		except:
 			print(bot.game.player.name+" is out of the game due to exception")
 			engine.bots.remove(bot)
+		
 	
 	if len(engine.bots)==1:
 		print("Turn {} {} ; {} wins! ".format(i,engine.pscore() , engine.bots[0].game.player.name))

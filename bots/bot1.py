@@ -121,12 +121,8 @@ class ooo():
 		pass
 		
 
-
 def Move_to_Random_Island(game , pirate , runer):
 	target = list()
-
-
-
 	if len(game.get_enemy_islands()) > 0 :
 		target+= game.get_enemy_islands()
 	if len(game.get_not_my_islands()) > 0:
